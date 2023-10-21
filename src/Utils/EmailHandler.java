@@ -1,4 +1,4 @@
-package Presentacion;
+package Utils;
 
 import java.util.LinkedList;
 
@@ -17,11 +17,6 @@ public class EmailHandler {
         this.remitente = this.getRemitente();
     }
 
-    // LISTPROD ["*"]
-    // LISTPROD ["",""]
-    // ADDPROD ["","","",""]
-    // EDITPROD ["","","",""]
-    // DELPROD ["","","",""]
     private boolean validateSubject() {
         String subject = this.subject;
 
@@ -91,23 +86,48 @@ public class EmailHandler {
         return validateSubject();
     }
 
-    String getComando() {
+    public String getComando() {
         if (isValidate())
             return "";
         String subject = this.subject;
         int espacio = subject.indexOf(" ");
         String comando = subject.substring(0, espacio);
-        return comando;
+        return comando.toUpperCase();
     }
 
-    String getParametros() {
+    public LinkedList<String> getParametros() {
         if (isValidate())
-            return "";
+            return null;
         String subject = this.subject;
         int parentesis1 = subject.indexOf("[");
         int parentesis2 = subject.indexOf("]");
         String parametros = subject.substring(parentesis1 + 1, parentesis2);
-        return parametros;
+        // eliminar []
+        parametros = parametros.replace("[", "");
+        parametros = parametros.replace("]", "");
+
+        // eliminar espacios en blanco al inicio y al final
+        parametros = parametros.trim();
+
+        // eliminar los \n
+        parametros = parametros.replace("\n", "");
+
+        // eliminar los \r
+        parametros = parametros.replace("\r", "");
+
+        // eliminar los espacios en blanco entre los parametros
+        parametros = parametros.replace(" ", "");
+
+        // extraer los parametros
+        String[] parametrosArray = parametros.split(",");
+
+        // eliminar las comillas
+        for (int i = 0; i < parametrosArray.length; i++) {
+            String param = parametrosArray[i];
+            param = param.replace("\"", "");
+            parametrosArray[i] = param;
+        }
+        return this.createList(parametrosArray);
     }
 
     public LinkedList<String> createList(String[] params) {

@@ -1,10 +1,10 @@
 package Main;
 
-import Presentacion.Auth;
-import Presentacion.EmailHandler;
 import Presentacion.Route;
 import Servicios.PopService;
 import Servicios.SmtpService;
+import Utils.Auth;
+import Utils.EmailHandler;
 
 public class GalbaEmail {
 
@@ -16,9 +16,9 @@ public class GalbaEmail {
         int cantMails = pop.getCantidadEmails();
         while (true) {
             int newCantsMails = pop.getCantidadEmails();
-            System.out.println("Escuchando EMAILS...");
             if (cantMails != newCantsMails) {
                 cantMails = newCantsMails;
+                System.out.println("*************NEW EMAIL**********************");
                 try {
                     String email = pop.getMail();
                     EmailHandler emailHandler = new EmailHandler(email);
@@ -31,10 +31,10 @@ public class GalbaEmail {
                         continue;
                     }
                     route.routes(emailHandler);
-                    System.out.println("***********************************");
                 } catch (Exception e) {
                     System.out.println("Error al obtener emails");
                 }
+                System.out.println("**********************************************");
             }
             try {
                 Thread.sleep(2000);

@@ -1,27 +1,56 @@
 package Presentacion;
 
+import java.util.LinkedList;
+
+import Negocio.RolNegocio;
+import Negocio.UsuarioNegocio;
+import Servicios.SmtpService;
+import Utils.EmailHandler;
+import Utils.Help;
+
 public class Route {
 
     public void routes(EmailHandler emailHandler) {
+        SmtpService smtp = new SmtpService();
+        UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        RolNegocio rolNegocio = new RolNegocio();
+
         String comando = emailHandler.getComando();
-        String parametros = emailHandler.getParametros();
+        LinkedList<String> parametros = emailHandler.getParametros();
         switch (comando) {
-            case "alta":
-                System.out.println("Alta");
+            case "HELP":
+                smtp.sendEmail(Help.getHelp(), emailHandler.remitente);
                 break;
-            case "baja":
-                System.out.println("Baja");
+            case "LISTROL":
+                rolNegocio.getAll(parametros);
                 break;
-            case "modificacion":
-                System.out.println("Modificacion");
+            case "ADDROL":
+                rolNegocio.create(parametros);
                 break;
-            case "consulta":
-                System.out.println("Consulta");
+            case "EDITROL":
+                rolNegocio.update(parametros);
+                break;
+            case "DELROL":
+                rolNegocio.delete(parametros.get(0));
+                break;
+            case "LISTUSER":
+                usuarioNegocio.getAll(parametros);
+                break;
+            case "ADDUSER":
+                usuarioNegocio.create(parametros);
+                break;
+            case "EDITUSER":
+                usuarioNegocio.update(parametros);
+                break;
+            case "DELUSER":
+                usuarioNegocio.delete(parametros.get(0));
                 break;
             default:
-                System.out.println("Subject no valido");
+                smtp.sendEmailError(
+                        "Error",
+                        emailHandler.remitente,
+                        "Comando no reconocido, consulte el comando HELP para obtener ayuda.");
                 break;
         }
     }
-
 }

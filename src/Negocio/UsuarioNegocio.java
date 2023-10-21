@@ -2,17 +2,20 @@ package Negocio;
 
 import java.util.LinkedList;
 
+import Datos.RolDato;
 import Datos.UsuarioDato;
+import Utils.Validate;
 
 public class UsuarioNegocio {
 
-    private UsuarioDato usuarioDato;
     private String respuesta;
-    // private rolController rol;
+
+    private UsuarioDato usuarioDato;
+    private RolDato rolDatos;
 
     public UsuarioNegocio() {
         usuarioDato = new UsuarioDato();
-        // rol = new rolController();
+        rolDatos = new RolDato();
     }
 
     public String create(LinkedList<String> params) {
@@ -23,11 +26,11 @@ public class UsuarioNegocio {
         usuarioDato = new UsuarioDato(0, params.get(0), params.get(1), params.get(2), params.get(3),
                 Integer.parseInt(params.get(4)));
         if (usuarioDato.create()) {
-            respuesta = "Creado exitosamente.";
+            this.respuesta = "Creado exitosamente.";
         } else {
-            respuesta = "No se pudo crear.";
+            this.respuesta = "No se pudo crear.";
         }
-        return respuesta;
+        return this.respuesta;
     }
 
     public String update(LinkedList<String> params) {
@@ -38,24 +41,25 @@ public class UsuarioNegocio {
         usuarioDato = new UsuarioDato(Integer.parseInt(params.get(0)), params.get(1), params.get(2), params.get(3),
                 params.get(4), Integer.parseInt(params.get(5)));
         if (usuarioDato.update()) {
-            respuesta = "Actualizado exitosamente.";
+            this.respuesta = "Actualizado exitosamente.";
         } else {
-            respuesta = "No se pudo actualizar.";
+            this.respuesta = "No se pudo actualizar.";
         }
-        return respuesta;
+        return this.respuesta;
     }
 
-    public String delete(int id) {
-        // if (!validatorUtils.validateNumber(String.valueOf(id))) {
-        // return "El id debe ser un numero";
-        // }
-        usuarioDato = new UsuarioDato();
-        if (usuarioDato.delete(id)) {
-            respuesta = "Eliminado exitosamente.";
-        } else {
-            respuesta = "No se pudo eliminar.";
+    public String delete(String id) {
+        if (!Validate.isNumber(id)) {
+            this.respuesta = "El id debe ser un numero";
+            return this.respuesta;
         }
-        return respuesta;
+        usuarioDato = new UsuarioDato();
+        if (usuarioDato.delete(Integer.parseInt(id))) {
+            this.respuesta = "Eliminado exitosamente.";
+        } else {
+            this.respuesta = "No se pudo eliminar.";
+        }
+        return this.respuesta;
     }
 
     public String getAll(LinkedList<String> params) {
@@ -63,9 +67,9 @@ public class UsuarioNegocio {
     }
 
     public boolean auth(String email) {
-        // if (!validatorUtils.validateEmail(email) || !usuario.emailExist(email)) {
-        // return false;
-        // }
+        if (!Validate.isEmail(email) || !usuarioDato.emailExist(email)) {
+            return false;
+        }
         return true;
     }
 
@@ -74,81 +78,81 @@ public class UsuarioNegocio {
     }
 
     private void validateCreate(LinkedList<String> params) {
-        // usuario = new usuarioModel();
-        // if (params.size() != 5) {
-        // this.respuesta = "La cantidad de parametros es incorrecta";
-        // return;
-        // }
-        // if (!validatorUtils.validateString(params.get(0))) {
-        // this.respuesta = "El nombre no puede ser vacio";
-        // return;
-        // }
-        // if (!validatorUtils.validateEmail(params.get(1))) {
-        // this.respuesta = "El email no es valido";
-        // return;
-        // }
-        // if (usuario.emailExist(params.get(1))) {
-        // this.respuesta = "El email ya existe";
-        // return;
-        // }
-        // if (!validatorUtils.validateString(params.get(2))) {
-        // this.respuesta = "La contraseña no puede ser vacio";
-        // return;
-        // }
-        // if (!validatorUtils.validateString(params.get(3))) {
-        // this.respuesta = "El area no puede ser vacio";
-        // return;
-        // }
-        // if (!validatorUtils.validateNumber(params.get(4))) {
-        // this.respuesta = "El ID del rol debe ser un numero";
-        // return;
-        // }
-        // if (!rol.exist(Integer.parseInt(params.get(4)))) {
-        // this.respuesta = "El ID del rol no existe";
-        // }
+        usuarioDato = new UsuarioDato();
+        if (Validate.hasSize(params, 5)) {
+            this.respuesta = "La cantidad de parametros es incorrecta";
+            return;
+        }
+        if (!Validate.isString(params.get(0))) {
+            this.respuesta = "El nombre debe ser un string y no puede ser vacio";
+            return;
+        }
+        if (!Validate.isEmail(params.get(1))) {
+            this.respuesta = "El email no es valido";
+            return;
+        }
+        if (usuarioDato.emailExist(params.get(1))) {
+            this.respuesta = "El email ya existe";
+            return;
+        }
+        if (!Validate.isString(params.get(2))) {
+            this.respuesta = "La contraseña debe ser un string y debe ser mayor a 8 caracteres";
+            return;
+        }
+        if (!Validate.isString(params.get(3))) {
+            this.respuesta = "El area no puede ser vacio";
+            return;
+        }
+        if (!Validate.isNumber(params.get(4))) {
+            this.respuesta = "El ID del rol debe ser un numero";
+            return;
+        }
+        if (!rolDatos.exist(Integer.parseInt(params.get(4)))) {
+            this.respuesta = "El ID del rol no existe";
+        }
     }
 
     private void validateUpdate(LinkedList<String> params) {
-        // usuario = new usuarioModel();
-        // if (params.size() != 6) {
-        // this.respuesta = "La cantidad de parametros es incorrecta";
-        // return;
-        // }
-        // if (!validatorUtils.validateNumber(params.get(0))) {
-        // this.respuesta = "El id debe ser un numero";
-        // return;
-        // }
-        // if (!usuario.exist(Integer.parseInt(params.get(0)))) {
-        // this.respuesta = "El usuario no existe";
-        // return;
-        // }
-        // if (!validatorUtils.validateString(params.get(1))) {
-        // this.respuesta = "El nombre no puede ser vacio";
-        // return;
-        // }
-        // if (!validatorUtils.validateEmail(params.get(2))) {
-        // this.respuesta = "El email no es valido";
-        // return;
-        // }
-        // if (usuario.emailExist(params.get(2))) {
-        // this.respuesta = "El email ya existe";
-        // return;
-        // }
-        // if (!validatorUtils.validateString(params.get(3))) {
-        // this.respuesta = "La contraseña no puede ser vacio";
-        // return;
-        // }
-        // if (!validatorUtils.validateString(params.get(4))) {
-        // this.respuesta = "El area no puede ser vacio";
-        // return;
-        // }
-        // if (!validatorUtils.validateNumber(params.get(5))) {
-        // this.respuesta = "El rol_id debe ser un numero";
-        // return;
-        // }
-        // if (!rol.exist(Integer.parseInt(params.get(5)))) {
-        // this.respuesta = "El ID del rol no existe";
-        // }
+        usuarioDato = new UsuarioDato();
+        if (Validate.hasSize(params, 6)) {
+            this.respuesta = "La cantidad de parametros es incorrecta";
+            return;
+        }
+        if (!Validate.isNumber(params.get(0))) {
+            this.respuesta = "El id debe ser un numero";
+            return;
+        }
+        if (!usuarioDato.exist(Integer.parseInt(params.get(0)))) {
+            this.respuesta = "El usuario no existe";
+            return;
+        }
+        if (!Validate.isString(params.get(1))) {
+            this.respuesta = "El nombre no puede ser vacio";
+            return;
+        }
+        if (!Validate.isEmail(params.get(2))) {
+            this.respuesta = "El email no es valido";
+            return;
+        }
+        if (usuarioDato.emailExist(params.get(2))) {
+            this.respuesta = "El email ya existe";
+            return;
+        }
+        if (!Validate.isString(params.get(3))) {
+            this.respuesta = "La contraseña no puede ser vacio";
+            return;
+        }
+        if (!Validate.isString(params.get(4))) {
+            this.respuesta = "El area no puede ser vacio";
+            return;
+        }
+        if (!Validate.isNumber(params.get(5))) {
+            this.respuesta = "El rol_id debe ser un numero";
+            return;
+        }
+        if (!rolDatos.exist(Integer.parseInt(params.get(5)))) {
+            this.respuesta = "El ID del rol no existe";
+        }
     }
 
 }
