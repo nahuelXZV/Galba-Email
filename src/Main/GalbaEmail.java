@@ -1,13 +1,18 @@
 package Main;
 
 import Presentacion.Auth;
-import Presentacion.SubjectHandler;
+import Presentacion.EmailHandler;
+import Presentacion.Route;
 import Servicios.PopService;
+import Servicios.SmtpService;
 
 public class GalbaEmail {
 
     public static void main(String[] args) {
         PopService pop = new PopService();
+        SmtpService smtp = new SmtpService();
+        Route route = new Route();
+
         int cantMails = pop.getCantidadEmails();
         while (true) {
             int newCantsMails = pop.getCantidadEmails();
@@ -15,17 +20,17 @@ public class GalbaEmail {
             if (cantMails != newCantsMails) {
                 cantMails = newCantsMails;
                 try {
-                    System.out.println("**********NEW EMAIL***************");
                     String email = pop.getMail();
-
-                    // validate comando
-                    
-                    // auth
-                    
-                    // routing
-                    
-                    // send email
-                    
+                    EmailHandler emailHandler = new EmailHandler(email);
+                    if (!emailHandler.isValidate()) {
+                        smtp.sendEmailError("Error", emailHandler.remitente, emailHandler.messageError);
+                        continue;
+                    }
+                    if (!Auth.auth(emailHandler.remitente)) {
+                        smtp.sendEmailError("Error", emailHandler.remitente, "Remitente no autorizado");
+                        continue;
+                    }
+                    route.routes(emailHandler);
                     System.out.println("***********************************");
                 } catch (Exception e) {
                     System.out.println("Error al obtener emails");

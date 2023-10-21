@@ -10,9 +10,8 @@ package Presentacion;
  * @author Nahuel
  */
 public class Auth {
-    
-    
-    static boolean auth(String email){
-        return false;
+
+    public static boolean auth(String email) {
+        return true;
     }
 }
