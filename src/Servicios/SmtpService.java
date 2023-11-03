@@ -8,7 +8,7 @@ import java.net.Socket;
 public class SmtpService {
 
     private final String SERVER = "mail.tecnoweb.org.bo";
-    private final String USER_EMISOR = "";
+    private final String USER_EMISOR = "grupo06sc@tecnoweb.org.bo";
     private final int PUERTO = 110;
 
     String line;

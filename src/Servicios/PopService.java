@@ -10,8 +10,8 @@ import java.net.UnknownHostException;
 public class PopService {
 
     private final String SERVER = "mail.tecnoweb.org.bo";
-    private final String USUARIO = "grupo06sa";
-    private final String CONTRASEÑA = "grupo06grupo06";
+    private final String USUARIO = "grupo06sc";
+    private final String CONTRASEÑA = "grup006grup006";
     private final int PUERTO = 110;
 
     public int getCantidadEmails() {
@@ -87,7 +87,7 @@ public class PopService {
                 comando = "RETR " + lastEmail + "\n";
                 salida.writeBytes(comando);
                 email = getMultiline(entrada);
-                //System.out.println("Text: " + text);
+                // System.out.println("Text: " + text);
 
                 comando = "QUIT\r\n";
                 salida.writeBytes(comando);

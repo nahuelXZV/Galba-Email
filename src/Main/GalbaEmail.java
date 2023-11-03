@@ -12,8 +12,9 @@ public class GalbaEmail {
         PopService pop = new PopService();
         SmtpService smtp = new SmtpService();
         Route route = new Route();
-
+        System.out.println("Iniciando servidor...");
         int cantMails = pop.getCantidadEmails();
+        System.out.println("Cantidad de emails: " + cantMails);
         while (true) {
             int newCantsMails = pop.getCantidadEmails();
             if (cantMails != newCantsMails) {
