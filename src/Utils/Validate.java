@@ -19,6 +19,10 @@ public class Validate {
         return true;
     }
 
+    public static boolean isBoolean(String bool) {
+        return bool.equals("true") || bool.equals("false");
+    }
+
     public static boolean isEmail(String email) {
         String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return Pattern.matches(regex, email);

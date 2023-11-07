@@ -17,32 +17,51 @@ public class UsuarioDato {
     private String nombre;
     private String correo;
     private String contraseña;
-    private String area;
-    private int rol_id;
+    private String direccion;
+    private String telefono;
+    private String cargo;
+    private boolean isCliente;
+    private boolean isPersonal;
+    private boolean isAdministrador;
 
     public UsuarioDato() {
         conexion = new ConexionDB();
     }
 
-    public UsuarioDato(int id, String nombre, String correo, String contraseña, String area, int rol_id) {
+    public UsuarioDato(int id, String nombre, String correo, String contraseña, String cargo, boolean isPersonal,
+            boolean isAdministrador) {
         conexion = new ConexionDB();
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.contraseña = contraseña;
-        this.area = area;
-        this.rol_id = rol_id;
+        this.cargo = cargo;
+        this.isPersonal = isPersonal;
+        this.isAdministrador = isAdministrador;
+    }
+
+    public UsuarioDato(int id, String nombre, String correo, String contraseña, String direccion, String telefono,
+            boolean isCliente) {
+        conexion = new ConexionDB();
+        this.id = id;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.contraseña = contraseña;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.isCliente = isCliente;
     }
 
     // Funciones
-    public boolean create() {
-        String sql = "INSERT INTO usuario (nombre , correo, contraseña, area, rol_id) VALUES (?, ?, ?, ?, ?)";
+    public boolean createPersonal() {
+        String sql = "INSERT INTO usuario (nombre , correo, contraseña, cargo, isPersonal, isAdministrador) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
             ps.setString(2, correo);
             ps.setString(3, contraseña);
-            ps.setString(4, area);
-            ps.setInt(5, rol_id);
+            ps.setString(4, cargo);
+            ps.setBoolean(5, isPersonal);
+            ps.setBoolean(6, isAdministrador);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -51,15 +70,51 @@ public class UsuarioDato {
         }
     }
 
-    public boolean update() {
-        String sql = "UPDATE usuario SET nombre = ?, correo = ?, contraseña = ?, area = ?, rol_id = ? WHERE id = ?";
+    public boolean createCliente() {
+        String sql = "INSERT INTO usuario (nombre , correo, contraseña, direccion, telefono, isCliente) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
             ps.setString(2, correo);
             ps.setString(3, contraseña);
-            ps.setString(4, area);
-            ps.setInt(5, rol_id);
-            ps.setInt(6, id);
+            ps.setString(4, direccion);
+            ps.setString(5, telefono);
+            ps.setBoolean(6, isCliente);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean updatePersonal() {
+        String sql = "UPDATE usuario SET nombre = ?, correo = ?, contraseña = ?, cargo = ?, isPersonal = ?, isAdministrador = ? WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            ps.setString(2, correo);
+            ps.setString(3, contraseña);
+            ps.setString(4, cargo);
+            ps.setBoolean(5, isPersonal);
+            ps.setBoolean(6, isAdministrador);
+            ps.setInt(7, id);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean updateCliente() {
+        String sql = "UPDATE usuario SET nombre = ?, correo = ?, contraseña = ?, direccion = ?, telefono = ?, isCliente = ? WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, nombre);
+            ps.setString(2, correo);
+            ps.setString(3, contraseña);
+            ps.setString(4, direccion);
+            ps.setString(5, telefono);
+            ps.setBoolean(6, isCliente);
+            ps.setInt(7, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -104,11 +159,12 @@ public class UsuarioDato {
         }
     }
 
-    public boolean validateRol(String correo, String rol) {
-        String sql = "SELECT * FROM usuario, rol WHERE rol.id = usuario.rol_id AND usuario.correo = ? AND rol.nombre = ?";
+    public boolean validateRol(String correo, String rol, String atribute) {
+        String sql = "SELECT * FROM usuario WHERE ? = ? AND correo = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, correo);
+            ps.setString(1, atribute);
             ps.setString(2, rol);
+            ps.setString(3, correo);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -132,17 +188,18 @@ public class UsuarioDato {
                 + "\n"
                 + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CORREO</th>\n"
                 + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">AREA</th>\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CARGO</th>\n"
                 + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ROL</th>\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">DIRECCION</th>\n"
+                + "\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">TELEFONO</th>\n"
                 + "\n";
         String query;
         if (params.size() == 0)
-            query = "SELECT usuario.id, usuario.nombre, usuario.correo, usuario.area, rol.nombre as rol FROM usuario, rol WHERE usuario.rol_id = rol.id";
+            query = "SELECT id, nombre, correo, cargo, direccion, telefono FROM usuario";
         else
-            query = "SELECT usuario.id, usuario.nombre, usuario.correo, usuario.area, rol.nombre as rol FROM usuario, rol WHERE usuario.rol_id = rol.id AND "
+            query = "SELECT id, nombre, correo, cargo, direccion, telefono FROM usuario WHERE "
                     + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
-
         try {
             Connection con = conexion.connect();
             consulta = (Statement) con.createStatement();

@@ -2,7 +2,6 @@ package Negocio;
 
 import java.util.LinkedList;
 
-import Datos.RolDato;
 import Datos.UsuarioDato;
 import Utils.Validate;
 
@@ -11,21 +10,19 @@ public class UsuarioNegocio {
     private String respuesta;
 
     private UsuarioDato usuarioDato;
-    private RolDato rolDatos;
 
     public UsuarioNegocio() {
         usuarioDato = new UsuarioDato();
-        rolDatos = new RolDato();
     }
 
-    public String create(LinkedList<String> params) {
-        this.validateCreate(params);
+    public String createPersonal(LinkedList<String> params) {
+        this.validateCreatePersonal(params);
         if (this.respuesta != null) {
             return this.respuesta;
         }
         usuarioDato = new UsuarioDato(0, params.get(0), params.get(1), params.get(2), params.get(3),
-                Integer.parseInt(params.get(4)));
-        if (usuarioDato.create()) {
+                Boolean.parseBoolean(params.get(4)), Boolean.parseBoolean(params.get(5)));
+        if (usuarioDato.createPersonal()) {
             this.respuesta = "Creado exitosamente.";
         } else {
             this.respuesta = "No se pudo crear.";
@@ -33,14 +30,44 @@ public class UsuarioNegocio {
         return this.respuesta;
     }
 
-    public String update(LinkedList<String> params) {
-        validateUpdate(params);
+    public String createCliente(LinkedList<String> params) {
+        this.validateCreateCliente(params);
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        usuarioDato = new UsuarioDato(Integer.parseInt(params.get(0)), params.get(1), params.get(2), params.get(3),
-                params.get(4), Integer.parseInt(params.get(5)));
-        if (usuarioDato.update()) {
+        usuarioDato = new UsuarioDato(0, params.get(0), params.get(1), params.get(2), params.get(3),
+                params.get(4), Boolean.parseBoolean(params.get(5)));
+        if (usuarioDato.createCliente()) {
+            this.respuesta = "Creado exitosamente.";
+        } else {
+            this.respuesta = "No se pudo crear.";
+        }
+        return this.respuesta;
+    }
+
+    public String updatePersonal(LinkedList<String> params) {
+        validateUpdatePersonal(params);
+        if (this.respuesta != null) {
+            return this.respuesta;
+        }
+        usuarioDato = new UsuarioDato(0, params.get(0), params.get(1), params.get(2), params.get(3),
+                Boolean.parseBoolean(params.get(4)), Boolean.parseBoolean(params.get(5)));
+        if (usuarioDato.updatePersonal()) {
+            this.respuesta = "Actualizado exitosamente.";
+        } else {
+            this.respuesta = "No se pudo actualizar.";
+        }
+        return this.respuesta;
+    }
+
+    public String updateCliente(LinkedList<String> params) {
+        validateUpdateCliente(params);
+        if (this.respuesta != null) {
+            return this.respuesta;
+        }
+        usuarioDato = new UsuarioDato(0, params.get(0), params.get(1), params.get(2), params.get(3),
+                params.get(4), Boolean.parseBoolean(params.get(5)));
+        if (usuarioDato.updateCliente()) {
             this.respuesta = "Actualizado exitosamente.";
         } else {
             this.respuesta = "No se pudo actualizar.";
@@ -73,13 +100,13 @@ public class UsuarioNegocio {
         return true;
     }
 
-    public boolean validateRol(String email, String rol) {
-        return usuarioDato.validateRol(email, rol);
+    public boolean validateRol(String email, String rol, String atribute) {
+        return usuarioDato.validateRol(email, rol, atribute);
     }
 
-    private void validateCreate(LinkedList<String> params) {
+    private void validateCreatePersonal(LinkedList<String> params) {
         usuarioDato = new UsuarioDato();
-        if (Validate.hasSize(params, 5)) {
+        if (Validate.hasSize(params, 6)) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
@@ -100,21 +127,58 @@ public class UsuarioNegocio {
             return;
         }
         if (!Validate.isString(params.get(3))) {
-            this.respuesta = "El area no puede ser vacio";
+            this.respuesta = "El cargo no puede ser vacio";
             return;
         }
-        if (!Validate.isNumber(params.get(4))) {
-            this.respuesta = "El ID del rol debe ser un numero";
+        if (!Validate.isBoolean(params.get(4))) {
+            this.respuesta = "El isPersonal debe ser un boolean (true o false)";
             return;
         }
-        if (!rolDatos.exist(Integer.parseInt(params.get(4)))) {
-            this.respuesta = "El ID del rol no existe";
+        if (!Validate.isBoolean(params.get(5))) {
+            this.respuesta = "El isAdministrador debe ser un boolean (true o false)";
+            return;
         }
     }
 
-    private void validateUpdate(LinkedList<String> params) {
+    private void validateCreateCliente(LinkedList<String> params) {
         usuarioDato = new UsuarioDato();
         if (Validate.hasSize(params, 6)) {
+            this.respuesta = "La cantidad de parametros es incorrecta";
+            return;
+        }
+        if (!Validate.isString(params.get(0))) {
+            this.respuesta = "El nombre debe ser un string y no puede ser vacio";
+            return;
+        }
+        if (!Validate.isEmail(params.get(1))) {
+            this.respuesta = "El email no es valido";
+            return;
+        }
+        if (usuarioDato.emailExist(params.get(1))) {
+            this.respuesta = "El email ya existe";
+            return;
+        }
+        if (!Validate.isString(params.get(2))) {
+            this.respuesta = "La contraseña debe ser un string y debe ser mayor a 8 caracteres";
+            return;
+        }
+        if (!Validate.isString(params.get(3))) {
+            this.respuesta = "El campo direccion no puede ser vacio";
+            return;
+        }
+        if (!Validate.isString(params.get(4))) {
+            this.respuesta = "El campo telefono no puede ser vacio";
+            return;
+        }
+        if (!Validate.isBoolean(params.get(5))) {
+            this.respuesta = "El isCliente debe ser un boolean (true o false)";
+            return;
+        }
+    }
+
+    private void validateUpdatePersonal(LinkedList<String> params) {
+        usuarioDato = new UsuarioDato();
+        if (Validate.hasSize(params, 7)) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
@@ -127,7 +191,7 @@ public class UsuarioNegocio {
             return;
         }
         if (!Validate.isString(params.get(1))) {
-            this.respuesta = "El nombre no puede ser vacio";
+            this.respuesta = "El nombre debe ser un string y no puede ser vacio";
             return;
         }
         if (!Validate.isEmail(params.get(2))) {
@@ -139,20 +203,64 @@ public class UsuarioNegocio {
             return;
         }
         if (!Validate.isString(params.get(3))) {
-            this.respuesta = "La contraseña no puede ser vacio";
+            this.respuesta = "La contraseña debe ser un string y debe ser mayor a 8 caracteres";
             return;
         }
         if (!Validate.isString(params.get(4))) {
-            this.respuesta = "El area no puede ser vacio";
+            this.respuesta = "El cargo no puede ser vacio";
             return;
         }
-        if (!Validate.isNumber(params.get(5))) {
-            this.respuesta = "El rol_id debe ser un numero";
+        if (!Validate.isBoolean(params.get(5))) {
+            this.respuesta = "El isPersonal debe ser un boolean (true o false)";
             return;
         }
-        if (!rolDatos.exist(Integer.parseInt(params.get(5)))) {
-            this.respuesta = "El ID del rol no existe";
+        if (!Validate.isBoolean(params.get(6))) {
+            this.respuesta = "El isAdministrador debe ser un boolean (true o false)";
+            return;
         }
     }
 
+    private void validateUpdateCliente(LinkedList<String> params) {
+        usuarioDato = new UsuarioDato();
+        if (Validate.hasSize(params, 7)) {
+            this.respuesta = "La cantidad de parametros es incorrecta";
+            return;
+        }
+        if (!Validate.isNumber(params.get(0))) {
+            this.respuesta = "El id debe ser un numero";
+            return;
+        }
+        if (!usuarioDato.exist(Integer.parseInt(params.get(0)))) {
+            this.respuesta = "El usuario no existe";
+            return;
+        }
+        if (!Validate.isString(params.get(1))) {
+            this.respuesta = "El nombre debe ser un string y no puede ser vacio";
+            return;
+        }
+        if (!Validate.isEmail(params.get(2))) {
+            this.respuesta = "El email no es valido";
+            return;
+        }
+        if (usuarioDato.emailExist(params.get(2))) {
+            this.respuesta = "El email ya existe";
+            return;
+        }
+        if (!Validate.isString(params.get(3))) {
+            this.respuesta = "La contraseña debe ser un string y debe ser mayor a 8 caracteres";
+            return;
+        }
+        if (!Validate.isString(params.get(4))) {
+            this.respuesta = "El campo direccion no puede ser vacio";
+            return;
+        }
+        if (!Validate.isString(params.get(5))) {
+            this.respuesta = "El campo telefono no puede ser vacio";
+            return;
+        }
+        if (!Validate.isBoolean(params.get(6))) {
+            this.respuesta = "El isCliente debe ser un boolean (true o false)";
+            return;
+        }
+    }
 }
