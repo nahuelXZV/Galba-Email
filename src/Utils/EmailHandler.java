@@ -14,16 +14,18 @@ public class EmailHandler {
     public EmailHandler(String email) {
         this.email = email;
         this.subject = this.getSubject();
-        this.remitente = this.getRemitente();
+        // this.remitente = this.getRemitente();
+        this.remitente = "daniela.carrasco@nahuelxzv.pro";
     }
 
     private boolean validateSubject() {
         String subject = this.subject;
-
         int parentesis1 = subject.indexOf("[");
         int parentesis2 = subject.indexOf("]");
         int espacio = subject.indexOf(" ");
-
+        System.out.println("parentesis1: " + parentesis1);
+        System.out.println("parentesis2: " + parentesis2);
+        System.out.println("espacio: " + espacio);
         if (parentesis1 == -1 || parentesis2 == -1) {
             this.messageError = "No se reconoce el formato indicado. Verifique que está utilizando los corchetes( [] ) para realizar la petición.";
             return false;
@@ -87,8 +89,6 @@ public class EmailHandler {
     }
 
     public String getComando() {
-        if (isValidate())
-            return "";
         String subject = this.subject;
         int espacio = subject.indexOf(" ");
         String comando = subject.substring(0, espacio);
@@ -96,12 +96,11 @@ public class EmailHandler {
     }
 
     public LinkedList<String> getParametros() {
-        if (isValidate())
-            return null;
         String subject = this.subject;
-        int parentesis1 = subject.indexOf("[");
+        int espacio = subject.indexOf(" ");
+        // int parentesis1 = subject.indexOf("[");
         int parentesis2 = subject.indexOf("]");
-        String parametros = subject.substring(parentesis1 + 1, parentesis2);
+        String parametros = subject.substring(espacio + 1, parentesis2 + 1);
         // eliminar []
         parametros = parametros.replace("[", "");
         parametros = parametros.replace("]", "");
@@ -118,7 +117,11 @@ public class EmailHandler {
         // eliminar los espacios en blanco entre los parametros
         parametros = parametros.replace(" ", "");
 
-        // extraer los parametros
+        System.out.println("parametros: " + parametros);
+
+        if (parametros.length() == 0) {
+            return new LinkedList<>();
+        }
         String[] parametrosArray = parametros.split(",");
 
         // eliminar las comillas

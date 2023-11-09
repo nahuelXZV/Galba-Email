@@ -175,32 +175,32 @@ public class UsuarioDato {
 
     public String getAll(LinkedList<String> params) {
         String tabla = "";
-        Statement consulta;
-        ResultSet resultado = null;
-        tabla = "<h1>Lista de usuarios</h1>"
-                + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
-                + "\n"
-                + "  <tr>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CORREO</th>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CARGO</th>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">DIRECCION</th>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">TELEFONO</th>\n"
-                + "\n";
-        String query;
-        if (params.size() == 0)
-            query = "SELECT id, nombre, correo, cargo, direccion, telefono FROM usuario";
-        else
-            query = "SELECT id, nombre, correo, cargo, direccion, telefono FROM usuario WHERE "
-                    + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
         try {
+            Statement consulta;
+            ResultSet resultado = null;
+            tabla = "<h1>Lista de usuarios</h1>\n"
+                    + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
+                    + "\n"
+                    + "  <tr>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CORREO</th>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CARGO</th>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">DIRECCION</th>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">TELEFONO</th>\n"
+                    + "\n";
+            String query = "";
+            if (params.size() == 0)
+                query = "SELECT id, nombre, correo, cargo, direccion, telefono FROM usuario";
+            else
+                query = "SELECT id, nombre, correo, cargo, direccion, telefono FROM usuario WHERE "
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             Connection con = conexion.connect();
             consulta = (Statement) con.createStatement();
             resultado = ((java.sql.Statement) consulta).executeQuery(query);
@@ -221,6 +221,7 @@ public class UsuarioDato {
             con.close();
         } catch (SQLException e) {
             tabla = "No se pudieron listar los datos.";
+            System.out.println(e.getMessage());
         }
         return tabla;
     }

@@ -5,6 +5,7 @@ import Servicios.PopService;
 import Servicios.SmtpService;
 import Utils.Auth;
 import Utils.EmailHandler;
+import Utils.Help;
 
 public class GalbaEmail {
 
@@ -23,12 +24,23 @@ public class GalbaEmail {
                 try {
                     String email = pop.getMail();
                     EmailHandler emailHandler = new EmailHandler(email);
+                    System.out.println("Email: " + emailHandler.remitente);
+                    System.out.println("Subject: " + emailHandler.subject);
+                    if (emailHandler.subject.equals("HELP") || emailHandler.subject.equals("help")) {
+                        System.out.println("HELP");
+                        smtp.sendEmail(Help.getHelp(), emailHandler.remitente);
+                        System.out.println("**********************************************");
+                        continue;
+                    }
                     if (!emailHandler.isValidate()) {
-                        smtp.sendEmailError("Error", emailHandler.remitente, emailHandler.messageError);
+                        System.out.println("Error: " + emailHandler.messageError);
+                        smtp.sendEmailError("Error", emailHandler.messageError, emailHandler.remitente);
+                        System.out.println("**********************************************");
                         continue;
                     }
                     if (!Auth.auth(emailHandler.remitente)) {
-                        smtp.sendEmailError("Error", emailHandler.remitente, "Remitente no autorizado");
+                        smtp.sendEmailError("Error", "Remitente no autorizado", emailHandler.remitente);
+                        System.out.println("**********************************************");
                         continue;
                     }
                     route.routes(emailHandler);

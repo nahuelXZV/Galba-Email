@@ -9,9 +9,14 @@ import java.net.UnknownHostException;
 
 public class PopService {
 
-    private final String SERVER = "mail.tecnoweb.org.bo";
-    private final String USUARIO = "grupo06sc";
-    private final String CONTRASEÑA = "grup006grup006";
+    /*
+     * private final String SERVER = "mail.tecnoweb.org.bo";
+     * private final String USUARIO = "grupo06sc";
+     * private final String CONTRASEÑA = "grup006grup006";
+     */
+    private final String SERVER = "nahuelxzv.pro";
+    private final String USUARIO = "nahuel.zalazar";
+    private final String CONTRASEÑA = "email2023";
     private final int PUERTO = 110;
 
     public int getCantidadEmails() {

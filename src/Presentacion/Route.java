@@ -5,37 +5,42 @@ import java.util.LinkedList;
 import Negocio.UsuarioNegocio;
 import Servicios.SmtpService;
 import Utils.EmailHandler;
-import Utils.Help;
 
 public class Route {
 
     public void routes(EmailHandler emailHandler) {
         SmtpService smtp = new SmtpService();
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        String response = "";
 
         String comando = emailHandler.getComando();
         LinkedList<String> parametros = emailHandler.getParametros();
+        System.out.println("Comando: " + comando);
         switch (comando) {
-            case "HELP":
-                smtp.sendEmail(Help.getHelp(), emailHandler.remitente);
-                break;
             case "LISTUSER":
-                usuarioNegocio.getAll(parametros);
+                System.out.println("Parametros: " + parametros);
+                response = usuarioNegocio.getAll(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
                 break;
             case "ADDUSER":
-                usuarioNegocio.createPersonal(parametros);
+                response = usuarioNegocio.createPersonal(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
                 break;
             case "ADDCLIENT":
-                usuarioNegocio.createCliente(parametros);
+                response = usuarioNegocio.createCliente(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
                 break;
             case "EDITUSER":
-                usuarioNegocio.updatePersonal(parametros);
+                response = usuarioNegocio.updatePersonal(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
                 break;
             case "EDITCLIENT":
-                usuarioNegocio.updateCliente(parametros);
+                response = usuarioNegocio.updateCliente(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
                 break;
             case "DELUSER":
-                usuarioNegocio.delete(parametros.get(0));
+                response = usuarioNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
                 break;
             default:
                 smtp.sendEmailError(

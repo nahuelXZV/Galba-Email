@@ -7,9 +7,10 @@ import java.sql.SQLException;
 public class ConexionDB {
 
     private final String DB = "db_grupo06sc";
-    private final String USER = "grupo06sc";
-    private final String PASSWORD = "grup006grup006";
-    private final String URL = "jdbc:postgresql://tecnoweb.org.bo:5432/" + DB;
+    private final String USER = /* "grupo06sc"; */ "postgres";
+    private final String PASSWORD = /* "grup006grup006"; */ "admin";
+    private final String URL = /* "jdbc:postgresql://tecnoweb.org.bo:5432/" + DB; */"jdbc:postgresql://localhost:5432/"
+            + DB;
     private Connection conn;
 
     public Connection getConexion() {

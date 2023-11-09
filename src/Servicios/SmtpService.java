@@ -7,9 +7,13 @@ import java.net.Socket;
 
 public class SmtpService {
 
-    private final String SERVER = "mail.tecnoweb.org.bo";
-    private final String USER_EMISOR = "grupo06sc@tecnoweb.org.bo";
-    private final int PUERTO = 110;
+    /*
+     * private final String SERVER = "mail.tecnoweb.org.bo";
+     * private final String USER_EMISOR = "grupo06sc@tecnoweb.org.bo";
+     */
+    private final String SERVER = "nahuelxzv.pro";
+    private final String USER_EMISOR = "nahuel.zalazar@nahuelxzv.pro";
+    private final int PUERTO = 25;
 
     String line;
     String comando = "";
@@ -32,7 +36,9 @@ public class SmtpService {
                 comando = "DATA\r\n";
                 salida.writeBytes(comando);
 
-                comando = "SUBJECT :" + mensaje + "\r\n";
+                comando = "SUBJECT : Respuesta a consulta" + "\r\n";
+                comando += "Content-Type: text/html; charset=utf-8" + "\r\n"; // Agrega el encabezado Content-Type
+                comando += mensaje + "\r\n";
                 comando += ".\r\n";
                 salida.writeBytes(comando);
 

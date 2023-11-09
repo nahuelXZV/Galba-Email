@@ -3,7 +3,13 @@ package Utils;
 public class Help {
 
     public static String getHelp() {
-        return "<h1>FERRETERIA GALBA - COMANDOS DISPONIBLES</h1>"
+        return "<!DOCTYPE html>\r\n" + //
+                "<html lang=\"en\">\r\n" + //
+                "<head>\r\n" + //
+                "    <meta charset=\"UTF-8\">\r\n" + //
+                "</head>\r\n" + //
+                "<body>"
+                + "<h1>FERRETERIA GALBA - COMANDOS DISPONIBLES</h1>"
                 + "<p>Para poder utilizar los comandos, debe enviar un correo a la direccion: <b> grupo@mail.com </b> con el siguiente formato:</p>"
                 + "<p> <b> Subject: [COMANDO] [PARAMETROS] </b>, los parametros deben ir entre comillas dobles (\"\") y separados por una coma </p>"
                 + "<table style=\" border-collapse: collapse; width: 100%; border: 1px solid black; padding: 8px;\"> \n \n"
@@ -27,6 +33,8 @@ public class Help {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar usuarios</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LISTUSER [] || LISTUSER [KEY: STRING['usuario.*, rol.*'], VALOR: ANY]</td> \n \n"
                 + "</tr> \n \n"
-                + "</table>";
+                + "</table>"
+                + "</body> \n"
+                + "</html>";
     }
 }
