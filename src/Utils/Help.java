@@ -35,6 +35,27 @@ public class Help {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar usuarios</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LISTUSER [] || LISTUSER [KEY: STRING, VALOR: ANY]</td> \n \n"
                 + "</tr> \n \n"
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Detalles carrito</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LISTCAR []</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Nuevo carrito</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">NEWCAR [] </td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar carrito</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELCAR [ID: NUMBER]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Agregar productos al carrito</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">ADDCARPROD [CANTIDAD: NUMBER, PRECIO: FLOAT, CARRITO_ID: NUMBER, PRODUCTO_ID: NUMBER]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar productos del carrito</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELCARPROD [ID: NUMBER]</td> \n \n"
+                + "</tr> \n \n"
                 + "</table>";
     }
 }

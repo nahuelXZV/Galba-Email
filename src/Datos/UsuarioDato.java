@@ -146,6 +146,21 @@ public class UsuarioDato {
         }
     }
 
+    public int idByEmail(String email) {
+        String sql = "SELECT id FROM usuario WHERE correo = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return rs.getInt("id");
+            else
+                return -1;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return -1;
+        }
+    }
+
     public boolean emailExist(String correo) {
         String sql = "SELECT * FROM usuario WHERE correo = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {

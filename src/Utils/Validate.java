@@ -12,6 +12,10 @@ public class Validate {
         return id.matches("[0-9]+");
     }
 
+    public static boolean isFloat(String id) {
+        return id.matches("[0-9]+(\\.[0-9]+)?");
+    }
+
     public static boolean isString(String text) {
         if (text.length() == 0) {
             return false;

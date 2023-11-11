@@ -2,6 +2,8 @@ package Presentacion;
 
 import java.util.LinkedList;
 
+import Negocio.CarritoDetalleNegocio;
+import Negocio.CarritoNegocio;
 import Negocio.UsuarioNegocio;
 import Servicios.SmtpService;
 import Utils.EmailHandler;
@@ -11,6 +13,8 @@ public class Route {
     public void routes(EmailHandler emailHandler) {
         SmtpService smtp = new SmtpService();
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
+        CarritoNegocio carritoNegocio = new CarritoNegocio();
+        CarritoDetalleNegocio carritoDetalleNegocio = new CarritoDetalleNegocio();
         String response = "";
 
         String comando = emailHandler.getComando();
@@ -40,6 +44,28 @@ public class Route {
                 break;
             case "DELUSER":
                 response = usuarioNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+
+            case "LISTCAR":
+                response = carritoNegocio.getAll(emailHandler.remitente);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "NEWCAR":
+                response = carritoNegocio.create(emailHandler.remitente);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DELCAR":
+                response = carritoNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+
+            case "ADDCARPROD":
+                response = carritoDetalleNegocio.create(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DELCARPROD":
+                response = carritoDetalleNegocio.delete(parametros.get(0));
                 smtp.sendEmail(response, emailHandler.remitente);
                 break;
             default:
