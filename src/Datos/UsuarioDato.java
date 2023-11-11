@@ -1,6 +1,5 @@
 package Datos;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -176,7 +175,7 @@ public class UsuarioDato {
     public String getAll(LinkedList<String> params) {
         String tabla = "";
         try {
-            Statement consulta;
+            java.sql.Statement consulta;
             ResultSet resultado = null;
             tabla = "<h1>Lista de usuarios</h1>\n"
                     + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
@@ -202,8 +201,8 @@ public class UsuarioDato {
                 query = "SELECT id, nombre, correo, cargo, direccion, telefono FROM usuario WHERE "
                         + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             Connection con = conexion.connect();
-            consulta = (Statement) con.createStatement();
-            resultado = ((java.sql.Statement) consulta).executeQuery(query);
+            consulta = con.createStatement();
+            resultado = consulta.executeQuery(query);
             ResultSetMetaData rsmd = resultado.getMetaData();
             int cantidadColumnas = rsmd.getColumnCount();
             while (resultado.next()) {
@@ -217,7 +216,7 @@ public class UsuarioDato {
                 tabla = tabla + "  </tr>\n" + "\n";
             }
             tabla = tabla + "\n" + "</table>";
-            ((Connection) consulta).close();
+            consulta.close();
             con.close();
         } catch (SQLException e) {
             tabla = "No se pudieron listar los datos.";

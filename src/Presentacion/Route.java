@@ -16,9 +16,9 @@ public class Route {
         String comando = emailHandler.getComando();
         LinkedList<String> parametros = emailHandler.getParametros();
         System.out.println("Comando: " + comando);
+        System.out.println("Parametros: " + parametros);
         switch (comando) {
             case "LISTUSER":
-                System.out.println("Parametros: " + parametros);
                 response = usuarioNegocio.getAll(parametros);
                 smtp.sendEmail(response, emailHandler.remitente);
                 break;

@@ -114,21 +114,15 @@ public class EmailHandler {
         // eliminar los \r
         parametros = parametros.replace("\r", "");
 
-        // eliminar los espacios en blanco entre los parametros
-        parametros = parametros.replace(" ", "");
-
-        System.out.println("parametros: " + parametros);
-
         if (parametros.length() == 0) {
             return new LinkedList<>();
         }
         String[] parametrosArray = parametros.split(",");
-
         // eliminar las comillas
         for (int i = 0; i < parametrosArray.length; i++) {
             String param = parametrosArray[i];
             param = param.replace("\"", "");
-            parametrosArray[i] = param;
+            parametrosArray[i] = param.trim();
         }
         return this.createList(parametrosArray);
     }
@@ -136,7 +130,6 @@ public class EmailHandler {
     public LinkedList<String> createList(String[] params) {
         LinkedList<String> list = new LinkedList<>();
         for (String param : params) {
-            param = param.trim();
             list.add(param);
         }
         return list;

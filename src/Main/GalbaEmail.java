@@ -27,21 +27,23 @@ public class GalbaEmail {
                     System.out.println("Email: " + emailHandler.remitente);
                     System.out.println("Subject: " + emailHandler.subject);
                     if (emailHandler.subject.equals("HELP") || emailHandler.subject.equals("help")) {
-                        System.out.println("HELP");
                         smtp.sendEmail(Help.getHelp(), emailHandler.remitente);
                         System.out.println("**********************************************");
                         continue;
+                        // return;
                     }
                     if (!emailHandler.isValidate()) {
                         System.out.println("Error: " + emailHandler.messageError);
                         smtp.sendEmailError("Error", emailHandler.messageError, emailHandler.remitente);
                         System.out.println("**********************************************");
                         continue;
+                        // return;
                     }
                     if (!Auth.auth(emailHandler.remitente)) {
                         smtp.sendEmailError("Error", "Remitente no autorizado", emailHandler.remitente);
                         System.out.println("**********************************************");
                         continue;
+                        // return;
                     }
                     route.routes(emailHandler);
                 } catch (Exception e) {

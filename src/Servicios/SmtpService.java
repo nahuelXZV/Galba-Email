@@ -19,6 +19,7 @@ public class SmtpService {
     String comando = "";
 
     public boolean sendEmail(String mensaje, String receptor) {
+        mensaje = createHTML(mensaje);
         try {
             Socket socket = new Socket(SERVER, PUERTO);
             BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -37,7 +38,7 @@ public class SmtpService {
                 salida.writeBytes(comando);
 
                 comando = "SUBJECT : Respuesta a consulta" + "\r\n";
-                comando += "Content-Type: text/html; charset=utf-8" + "\r\n"; // Agrega el encabezado Content-Type
+                comando += "Content-Type: text/html; charset=UTF-8\\r\\n";
                 comando += mensaje + "\r\n";
                 comando += ".\r\n";
                 salida.writeBytes(comando);
@@ -56,6 +57,7 @@ public class SmtpService {
     }
 
     public boolean sendEmailError(String subject, String body, String receptor) {
+        body = createHTML(body);
         try {
             Socket socket = new Socket(SERVER, PUERTO);
             BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -74,6 +76,7 @@ public class SmtpService {
                 salida.writeBytes(comando);
 
                 comando = "SUBJECT :" + subject + "\r\n";
+                comando += "Content-Type: text/html; charset=UTF-8\\r\\n";
                 comando += body + "\r\n";
                 comando += ".\r\n";
                 salida.writeBytes(comando);
@@ -89,6 +92,20 @@ public class SmtpService {
             System.out.println("[SMTP-SERVICE]" + e);
         }
         return false;
+    }
+
+    private String createHTML(String mensaje) {
+        return "<!DOCTYPE html>\r\n" + //
+                "<html lang=\"es\">\r\n" + //
+                "<head>\r\n" + //
+                "    <meta charset=\"UTF-8\">\r\n" + //
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" + //
+                "    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\r\n" + //
+                "</head>\r\n" + //
+                "<body>" +
+                mensaje +
+                "</body> \n"
+                + "</html>";
     }
 
 }

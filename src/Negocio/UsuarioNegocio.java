@@ -106,7 +106,7 @@ public class UsuarioNegocio {
 
     private void validateCreatePersonal(LinkedList<String> params) {
         usuarioDato = new UsuarioDato();
-        if (Validate.hasSize(params, 6)) {
+        if (params.size() != 6) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
@@ -142,7 +142,7 @@ public class UsuarioNegocio {
 
     private void validateCreateCliente(LinkedList<String> params) {
         usuarioDato = new UsuarioDato();
-        if (Validate.hasSize(params, 6)) {
+        if (params.size() != 6) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
@@ -178,7 +178,7 @@ public class UsuarioNegocio {
 
     private void validateUpdatePersonal(LinkedList<String> params) {
         usuarioDato = new UsuarioDato();
-        if (Validate.hasSize(params, 7)) {
+        if (params.size() != 7) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
@@ -222,7 +222,7 @@ public class UsuarioNegocio {
 
     private void validateUpdateCliente(LinkedList<String> params) {
         usuarioDato = new UsuarioDato();
-        if (Validate.hasSize(params, 7)) {
+        if (params.size() != 7) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
