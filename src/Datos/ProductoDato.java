@@ -167,6 +167,7 @@ public class ProductoDato {
             while (resultado.next()) {
                 tabla = tabla + "  <tr>\n" + "\n";
                 for (int i = 0; i < cantidadColumnas; i++) {
+                    // i=2 Imagen del Producto
                     tabla = tabla
                             + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
                             + resultado.getString(i + 1) + "</td>\n"
