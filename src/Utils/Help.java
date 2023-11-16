@@ -56,6 +56,24 @@ public class Help {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar productos del carrito</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELCARPROD [ID: NUMBER]</td> \n \n"
                 + "</tr> \n \n"
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar producto</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">ADDPRODUCTO [NOMBRE: STRING, IMAGEN: URL, TAMAÑO: STRING, PRECIO: FLOAT, CANTIDAD: INTEGER, DESCRIPCION: STRING, CATEGORIA: STRING]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar producto</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">EDITPRODUCTO [ID: NUMBER, NOMBRE: STRING, IMAGEN: URL, TAMAÑO: STRING, PRECIO: FLOAT, CANTIDAD: INTEGER, DESCRIPCION: STRING, CATEGORIA: STRING]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar producto</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELPRODUCTO [ID: NUMBER]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar usuarios</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LISTPRODUCTO [] || LISTUSER [KEY: STRING, VALOR: ANY]</td> \n \n"
+                + "</tr> \n \n"
+
                 + "</table>";
     }
 }

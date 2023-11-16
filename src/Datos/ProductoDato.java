@@ -101,32 +101,6 @@ public class ProductoDato {
         }
     }
 
-    public boolean emailExist(String correo) {
-        String sql = "SELECT * FROM usuario WHERE correo = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, correo);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean validateRol(String correo, String rol, String atribute) {
-        String sql = "SELECT * FROM usuario WHERE ? = ? AND correo = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, atribute);
-            ps.setString(2, rol);
-            ps.setString(3, correo);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
     public String getAll(LinkedList<String> params) {
         String tabla = "";
         try {
@@ -168,10 +142,17 @@ public class ProductoDato {
                 tabla = tabla + "  <tr>\n" + "\n";
                 for (int i = 0; i < cantidadColumnas; i++) {
                     // i=2 Imagen del Producto
-                    tabla = tabla
-                            + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
-                            + resultado.getString(i + 1) + "</td>\n"
-                            + "\n";
+                    if (i == 2) {
+                        tabla = tabla
+                                + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\"><img src=\""
+                                + resultado.getString(i + 1) + "\"></td>\n"
+                                + "\n";
+                    } else {
+                        tabla = tabla
+                                + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
+                                + resultado.getString(i + 1) + "</td>\n"
+                                + "\n";
+                    }
                 }
                 tabla = tabla + "  </tr>\n" + "\n";
             }
