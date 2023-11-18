@@ -15,11 +15,11 @@ create table usuario (
 create table producto(
     id serial not null,
     nombre varchar(100) not null,
-    imagen varchar(100) not null,
+    imagen varchar() not null,
     tamaño varchar(100) not null,
     precio float not null,
     cantidad int not null,
-    descripcion varchar(100) not null,
+    descripcion varchar() not null,
     categoria varchar(100) not null,
     primary key(id)
 );

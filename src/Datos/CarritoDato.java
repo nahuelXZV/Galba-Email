@@ -55,10 +55,11 @@ public class CarritoDato {
     }
 
     public boolean update(int carrito_id, Float monto) {
-        Float monto_anterior = getMontoTotal(carrito_id);
         String sql = "UPDATE carrito SET monto_total = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setFloat(1, monto_anterior + monto);
+            Float monto_anterior = getMontoTotal(carrito_id);
+            Float monto_total = monto_anterior + monto;
+            ps.setFloat(1, monto_total);
             ps.setInt(2, carrito_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -69,6 +70,10 @@ public class CarritoDato {
     }
 
     public boolean delete(int id) {
+        CarritoDetalleDato carritoDetalleDato = new CarritoDetalleDato();
+        if (!carritoDetalleDato.deleteBycarrito(id)) {
+            return false;
+        }
         String sql = "DELETE FROM carrito WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -84,41 +89,51 @@ public class CarritoDato {
         String sql = "SELECT * FROM carrito WHERE usuario_id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, usuario_id);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    public int getIdCarritoByUser(int usuario_id) {
+        String sql = "SELECT id FROM carrito WHERE usuario_id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, usuario_id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
     }
 
     public boolean exist(int id) {
         String sql = "SELECT * FROM carrito WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    private float getMontoTotal(int id) {
+    public float getMontoTotal(int id) {
         float monto_total = 0;
-        try {
-            java.sql.Statement consulta;
+        String sql = "SELECT monto_total FROM carrito WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
             ResultSet resultado = null;
-            String query = "";
-            query = "SELECT monto_total FROM carrito WHERE id = " + id;
-            Connection con = conexion.connect();
-            consulta = con.createStatement();
-            resultado = consulta.executeQuery(query);
+            resultado = ps.executeQuery();
             while (resultado.next()) {
                 monto_total = resultado.getFloat(1);
             }
-            consulta.close();
-            con.close();
+            return monto_total;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

@@ -48,7 +48,6 @@ public class CarritoNegocio {
         if (usuario_id == -1) {
             return "El usuario no existe o ya tiene un carrito, por favor elimine el carrito para crear uno nuevo.";
         }
-        System.out.println(usuario_id);
         return carritoDato.getAll(usuario_id);
     }
 }

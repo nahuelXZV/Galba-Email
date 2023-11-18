@@ -3,6 +3,7 @@ package Datos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import Servicios.ConexionDB;
 
@@ -18,10 +19,12 @@ public class CarritoDetalleDato {
     // Constructores
     public CarritoDetalleDato() {
         conexion = new ConexionDB();
+        carritoDato = new CarritoDato();
     }
 
     public CarritoDetalleDato(int cantidad, float precio, int carrito_id, int producto_id) {
         conexion = new ConexionDB();
+        carritoDato = new CarritoDato();
         this.cantidad = cantidad;
         this.precio = precio;
         this.carrito_id = carrito_id;
@@ -37,8 +40,8 @@ public class CarritoDetalleDato {
             ps.setInt(3, this.carrito_id);
             ps.setInt(4, this.producto_id);
             int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                carritoDato.update(this.carrito_id, this.precio * this.cantidad);
+            Float monto = this.precio * this.cantidad;
+            if (rowsAffected > 0 && carritoDato.update(this.carrito_id, monto)) {
                 return true;
             }
             return false;
@@ -58,5 +61,35 @@ public class CarritoDetalleDato {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    public boolean deleteBycarrito(int carrito_id) {
+        String sql = "DELETE FROM carrito_detalle WHERE carrito_id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, carrito_id);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public LinkedList<String> getCarritoDetalle(int carrito_id) {
+        String sql = "SELECT cantidad, precio, producto_id FROM carrito_detalle WHERE carrito_id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, carrito_id);
+            java.sql.ResultSet rs = ps.executeQuery();
+            LinkedList<String> carritoDetalle = new LinkedList<String>();
+            while (rs.next()) {
+                carritoDetalle.add(rs.getInt("cantidad") + "," + rs.getFloat("precio") + ","
+                        + rs.getInt("producto_id"));
+            }
+            return carritoDetalle;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+
     }
 }

@@ -1,6 +1,5 @@
 package Datos;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,18 +92,34 @@ public class ProductoDato {
         String sql = "SELECT * FROM producto WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
+    public Float getPrecio(int id) {
+        String sql = "SELECT precio FROM producto WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat(1);
+            }
+            return 0f;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0f;
+        }
+
+    }
+
     public String getAll(LinkedList<String> params) {
         String tabla = "";
         try {
-            Statement consulta;
+            java.sql.Statement consulta;
             ResultSet resultado = null;
             tabla = "<h1>Lista de productos</h1>\n"
                     + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
@@ -134,19 +149,17 @@ public class ProductoDato {
                 query = "SELECT id, nombre, imagen, tamaño, precio, cantidad, descripcion, categoria FROM producto WHERE "
                         + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             Connection con = conexion.connect();
-            consulta = (Statement) con.createStatement();
-            resultado = ((java.sql.Statement) consulta).executeQuery(query);
+            consulta = con.createStatement();
+            resultado = consulta.executeQuery(query);
             ResultSetMetaData rsmd = resultado.getMetaData();
             int cantidadColumnas = rsmd.getColumnCount();
             while (resultado.next()) {
                 tabla = tabla + "  <tr>\n" + "\n";
                 for (int i = 0; i < cantidadColumnas; i++) {
-                    // i=2 Imagen del Producto
                     if (i == 2) {
                         tabla = tabla
                                 + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\"><img src=\""
-                                + resultado.getString(i + 1) + "\"></td>\n"
-                                + "\n";
+                                + resultado.getString(i + 1) + "\" width=\"100\" height=\"100\"></td>\n" + "\n";
                     } else {
                         tabla = tabla
                                 + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
@@ -157,7 +170,7 @@ public class ProductoDato {
                 tabla = tabla + "  </tr>\n" + "\n";
             }
             tabla = tabla + "\n" + "</table>";
-            ((Connection) consulta).close();
+            consulta.close();
             con.close();
         } catch (SQLException e) {
             tabla = "No se pudieron listar los datos.";
