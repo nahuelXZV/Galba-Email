@@ -11,7 +11,6 @@ public class PedidoDetalleDato {
     private final ConexionDB conexion;
     private final CarritoDetalleDato carritoDetalleDato;
 
-    private int id;
     private int cantidad;
     private float precio;
     private int pedido_id;
