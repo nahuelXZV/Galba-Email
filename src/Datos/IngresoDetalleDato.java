@@ -41,12 +41,12 @@ public class IngresoDetalleDato {
         }
     }
 
-    public boolean update(int ingreso_id, int cantidad) {
-        int cantidad_anterior = getCantidad(ingreso_id);
-        String sql = "UPDATE carrito SET monto_total = ? WHERE id = ?";
+    public boolean update(int id, int cantidad) {
+        int cantidad_anterior = getCantidad(id);
+        String sql = "UPDATE ingreso_detalle SET cantidad = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setFloat(1, cantidad_anterior + cantidad);
-            ps.setInt(2, ingreso_id);
+            ps.setInt(1, cantidad_anterior + cantidad);
+            ps.setInt(2, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {

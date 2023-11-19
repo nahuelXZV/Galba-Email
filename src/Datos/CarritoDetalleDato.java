@@ -90,6 +90,5 @@ public class CarritoDetalleDato {
             System.out.println(e.getMessage());
             return null;
         }
-
     }
 }
