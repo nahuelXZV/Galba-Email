@@ -21,7 +21,7 @@ public class CompraDetalleDato {
         compraDato = new CompraDato();
     }
 
-    public CompraDetalleDato(int cantidad, int precio, int compra_id, int producto_id) {
+    public CompraDetalleDato(int cantidad, float precio, int compra_id, int producto_id) {
         conexion = new ConexionDB();
         compraDato = new CompraDato();
         this.cantidad = cantidad;
