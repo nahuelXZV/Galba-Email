@@ -65,6 +65,10 @@ public class SalidaDato {
     }
 
     public boolean delete(int id) {
+        SalidaDetalleDato salidaDetalleDato = new SalidaDetalleDato();
+        if (!salidaDetalleDato.deleteBysalida(id)) {
+            return false;
+        }
         String sql = "DELETE FROM salida WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);

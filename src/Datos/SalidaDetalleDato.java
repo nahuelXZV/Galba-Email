@@ -3,8 +3,8 @@ package Datos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import Servicios.ConexionDB;
 
@@ -67,6 +67,18 @@ public class SalidaDetalleDato {
         }
     }
 
+    public boolean deleteBysalida(int salida_id) {
+        String sql = "DELETE FROM salida_detalle WHERE salida_id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, salida_id);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     private int getCantidad(int id) {
         int cantidad = 0;
         try {
@@ -86,5 +98,22 @@ public class SalidaDetalleDato {
             System.out.println(e.getMessage());
         }
         return cantidad;
+    }
+
+    public LinkedList<String> getSalidaDetalle(int salida_id) {
+        String sql = "SELECT cantidad, motivo, producto_id FROM salida_detalle WHERE ingreso_id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, salida_id);
+            java.sql.ResultSet rs = ps.executeQuery();
+            LinkedList<String> salidaDetalle = new LinkedList<String>();
+            while (rs.next()) {
+                salidaDetalle.add(rs.getInt("cantidad") + "," + rs.getString("motivo") + ","
+                        + rs.getInt("producto_id"));
+            }
+            return salidaDetalle;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }
