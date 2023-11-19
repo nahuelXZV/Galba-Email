@@ -10,6 +10,7 @@ import Servicios.ConexionDB;
 
 public class SalidaDetalleDato {
     private final ConexionDB conexion;
+    private SalidaDato salidaDato;
 
     private int cantidad;
     private int salida_id;
@@ -17,10 +18,12 @@ public class SalidaDetalleDato {
 
     public SalidaDetalleDato() {
         conexion = new ConexionDB();
+        salidaDato = new SalidaDato();
     }
 
     public SalidaDetalleDato(int cantidad, int salida_id, int producto_id) {
         conexion = new ConexionDB();
+        salidaDato = new SalidaDato();
         this.cantidad = cantidad;
         this.salida_id = salida_id;
         this.producto_id = producto_id;

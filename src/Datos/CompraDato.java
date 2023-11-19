@@ -8,42 +8,44 @@ import java.sql.SQLException;
 
 import Servicios.ConexionDB;
 
-public class SalidaDato {
+public class CompraDato {
     private final ConexionDB conexion;
 
     private int id;
     private String fecha;
     private String hora;
-    private String motivo;
+    private float monto_total;
+    private int proveedor_id;
 
     // Constructores
-    public SalidaDato() {
+    public CompraDato() {
         conexion = new ConexionDB();
     }
 
-    public SalidaDato(String motivo) {
+    public CompraDato(int proveedor_id) {
         conexion = new ConexionDB();
         this.fecha = new java.util.Date().toString().substring(8, 10) + "/"
                 + new java.util.Date().toString().substring(4, 7) + "/"
                 + new java.util.Date().toString().substring(24, 29);
         this.hora = new java.util.Date().toString().substring(11, 19);
         this.hora = (Integer.parseInt(this.hora.substring(0, 2)) - 1) + this.hora.substring(2, 8);
-        this.motivo = motivo;
+        this.proveedor_id = proveedor_id;
+        this.monto_total = 0;
     }
 
-    public SalidaDato(int id, String motivo) {
+    public CompraDato(int id, float monto_total) {
         conexion = new ConexionDB();
         this.id = id;
-        this.motivo = motivo;
     }
 
     // Funciones
     public boolean create() {
-        String sql = "INSERT INTO salida (fecha, hora, motivo) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO compra (monto_total, fecha, hora, proveedor_id) VALUES (?, ?, ?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, this.fecha);
-            ps.setString(2, this.hora);
-            ps.setString(3, this.motivo);
+            ps.setFloat(1, this.monto_total);
+            ps.setString(2, this.fecha);
+            ps.setString(3, this.hora);
+            ps.setInt(4, this.proveedor_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -52,10 +54,13 @@ public class SalidaDato {
         }
     }
 
-    public boolean update(int salida_id, String motivo) {
-        String sql = "UPDATE salida SET motivo = ? WHERE id = ?";
+    public boolean update(int compra_id, Float monto) {
+        String sql = "UPDATE compra SET monto_total = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, motivo);
+            Float monto_anterior = getMontoTotal(compra_id);
+            Float monto_total = monto_anterior + monto;
+            ps.setFloat(1, monto_total);
+            ps.setInt(2, compra_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -65,11 +70,11 @@ public class SalidaDato {
     }
 
     public boolean delete(int id) {
-        SalidaDetalleDato salidaDetalleDato = new SalidaDetalleDato();
-        if (!salidaDetalleDato.deleteBysalida(id)) {
+        CompraDetalleDato compraDetalleDato = new CompraDetalleDato();
+        if (!compraDetalleDato.deleteBycompra(id)) {
             return false;
         }
-        String sql = "DELETE FROM salida WHERE id = ?";
+        String sql = "DELETE FROM compra WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -81,7 +86,7 @@ public class SalidaDato {
     }
 
     public boolean exist(int id) {
-        String sql = "SELECT * FROM salida WHERE id = ?";
+        String sql = "SELECT * FROM compra WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -92,13 +97,30 @@ public class SalidaDato {
         }
     }
 
+    public float getMontoTotal(int id) {
+        float monto_total = 0;
+        String sql = "SELECT monto_total FROM compra WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet resultado = null;
+            resultado = ps.executeQuery();
+            while (resultado.next()) {
+                monto_total = resultado.getFloat(1);
+            }
+            return monto_total;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return monto_total;
+    }
+
     public String getAll(int id) {
         String tabla = "";
         try {
             java.sql.Statement consulta;
             ResultSet resultado = null;
             String query = "";
-            query = "SELECT id, fecha, hora, motivo FROM salida WHERE id = " + id;
+            query = "SELECT id, fecha, hora, monto_total FROM compra WHERE id = " + id;
             Connection con = conexion.connect();
             consulta = con.createStatement();
             resultado = consulta.executeQuery(query);
@@ -108,13 +130,13 @@ public class SalidaDato {
                 this.id = resultado.getInt(1);
                 this.fecha = resultado.getString(2);
                 this.hora = resultado.getString(3);
-                this.motivo = resultado.getString(4);
+                this.monto_total = resultado.getFloat(4);
             }
-            tabla = "<h1>Detalle de la salida</h1>\n"
+            tabla = "<h1>Detalle de la compra</h1>\n"
                     + "ID: " + this.id + ".<br>"
                     + "Fecha: " + this.fecha + ".<br>"
                     + "Hora: " + this.hora + ".<br>"
-                    + "Motivo: " + this.motivo + "Bs. <br>"
+                    + "Motivo: " + this.monto_total + "Bs. <br>"
                     + "<h2>Lista de productos</h2>\n"
                     + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                     + "\n"
@@ -128,10 +150,13 @@ public class SalidaDato {
                     + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">PRODUCTO</th>\n"
                     + "\n"
                     + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CANTIDAD</th>\n"
+                    + "\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">PRECIO</th>\n"
                     + "\n";
 
-            query = "SELECT salida_detalle.id, producto.imagen, producto.nombre, salida_detalle.cantidad FROM  producto, salida_detalle WHERE salida_detalle.salida_id = "
-                    + this.id + " AND salida_detalle.producto_id = producto.id";
+            query = "SELECT compra_detalle.id, producto.imagen, producto.nombre, compra_detalle.cantidad FROM  producto, compra_detalle WHERE compra_detalle.compra_id = "
+                    + this.id + " AND compra_detalle.producto_id = producto.id";
             con = conexion.connect();
             consulta = con.createStatement();
             resultado = consulta.executeQuery(query);

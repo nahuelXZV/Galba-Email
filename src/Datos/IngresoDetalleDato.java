@@ -3,7 +3,6 @@ package Datos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
@@ -11,6 +10,7 @@ import Servicios.ConexionDB;
 
 public class IngresoDetalleDato {
     private final ConexionDB conexion;
+    private IngresoDato ingresoDato;
 
     private int cantidad;
     private int ingreso_id;
@@ -18,10 +18,12 @@ public class IngresoDetalleDato {
 
     public IngresoDetalleDato() {
         conexion = new ConexionDB();
+        ingresoDato = new IngresoDato();
     }
 
     public IngresoDetalleDato(int cantidad, int ingreso_id, int producto_id) {
         conexion = new ConexionDB();
+        ingresoDato = new IngresoDato();
         this.cantidad = cantidad;
         this.ingreso_id = ingreso_id;
         this.producto_id = producto_id;
