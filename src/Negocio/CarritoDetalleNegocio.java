@@ -4,6 +4,8 @@ import java.util.LinkedList;
 
 import Datos.CarritoDato;
 import Datos.CarritoDetalleDato;
+import Datos.ProductoDato;
+import Datos.UsuarioDato;
 import Utils.Validate;
 
 public class CarritoDetalleNegocio {
@@ -11,19 +13,29 @@ public class CarritoDetalleNegocio {
 
     private CarritoDetalleDato carritoDetalleDato;
     private CarritoDato carritoDatos;
+    private ProductoDato productoDatos;
+    private UsuarioDato usuarioDato;
 
     public CarritoDetalleNegocio() {
         carritoDetalleDato = new CarritoDetalleDato();
         carritoDatos = new CarritoDato();
+        productoDatos = new ProductoDato();
+        usuarioDato = new UsuarioDato();
     }
 
-    public String create(LinkedList<String> params) {
+    public String create(LinkedList<String> params, String email) {
         this.validateCreate(params);
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        carritoDetalleDato = new CarritoDetalleDato(Integer.parseInt(params.get(0)), Float.parseFloat(params.get(1)),
-                Integer.parseInt(params.get(2)), Integer.parseInt(params.get(3)));
+        int usuario_id = usuarioDato.idByEmail(email);
+        if (usuario_id == -1) {
+            return "El usuario no existe.";
+        }
+        Float precio = productoDatos.getPrecio(Integer.parseInt(params.get(1)));
+        int carrito_id = carritoDatos.getIdCarritoByUser(usuario_id);
+        carritoDetalleDato = new CarritoDetalleDato(Integer.parseInt(params.get(0)), precio,
+                carrito_id, Integer.parseInt(params.get(1)));
         if (carritoDetalleDato.create()) {
             this.respuesta = "Creado exitosamente.";
         } else {
@@ -48,7 +60,8 @@ public class CarritoDetalleNegocio {
 
     private void validateCreate(LinkedList<String> params) {
         carritoDatos = new CarritoDato();
-        if (params.size() != 4) {
+        productoDatos = new ProductoDato();
+        if (params.size() != 2) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
@@ -56,17 +69,9 @@ public class CarritoDetalleNegocio {
             this.respuesta = "La cantidad debe ser un numero";
             return;
         }
-        if (!Validate.isFloat(params.get(1))) {
-            this.respuesta = "El precio debe ser un numero";
+        if (!productoDatos.exist(Integer.parseInt(params.get(1)))) {
+            this.respuesta = "El id del producto no existe";
             return;
         }
-        if (carritoDatos.exist(Integer.parseInt(params.get(2)))) {
-            this.respuesta = "El id del carrito no existe";
-            return;
-        }
-        // if (carritoDatos.exist(Integer.parseInt(params.get(2)))) {
-        // this.respuesta = "El id del carrito no existe";
-        // return;
-        // }
     }
 }

@@ -114,6 +114,9 @@ public class EmailHandler {
         // eliminar los \r
         parametros = parametros.replace("\r", "");
 
+        // eliminar '
+        parametros = parametros.replace("'", "");
+
         if (parametros.length() == 0) {
             return new LinkedList<>();
         }

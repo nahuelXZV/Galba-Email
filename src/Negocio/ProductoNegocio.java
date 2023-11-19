@@ -1,14 +1,12 @@
 package Negocio;
 
 import java.util.LinkedList;
-
 import Datos.ProductoDato;
 import Utils.Validate;
 
 public class ProductoNegocio {
 
     private String respuesta;
-
     private ProductoDato productoDato;
 
     public ProductoNegocio() {
@@ -75,6 +73,7 @@ public class ProductoNegocio {
         }
         if (!Validate.isUrl(params.get(1))) {
             this.respuesta = "Debe ingresar una URL de la imagen";
+            System.out.println(this.respuesta);
             return;
         }
         if (!Validate.isString(params.get(2))) {

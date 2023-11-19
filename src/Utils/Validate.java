@@ -28,13 +28,21 @@ public class Validate {
     }
 
     public static boolean isEmail(String email) {
-        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        return Pattern.matches(regex, email);
+        try {
+            String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+            return Pattern.matches(regex, email);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static boolean isUrl(String url) {
-        String regex = "^https?://([A-Za-z0-9-]+.)+[A-Za-z]{2,6}(/[A-Za-z0-9-._~:/?#[]@!$&'()*+,;=%]*)?$";
-        return Pattern.matches(regex, url);
+        try {
+            String regex = "^(http|https)://[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(:[0-9]{1,5})?(/.*)?$";
+            return url.matches(regex);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static boolean isDate(String date) {
