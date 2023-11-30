@@ -1,8 +1,11 @@
 package Utils;
 
+import Datos.UsuarioDato;
+
 public class Auth {
 
     public static boolean auth(String email) {
-        return true;
+        UsuarioDato usuarioDato = new UsuarioDato();
+        return usuarioDato.emailExist(email);
     }
 }

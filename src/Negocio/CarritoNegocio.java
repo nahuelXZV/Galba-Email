@@ -46,7 +46,7 @@ public class CarritoNegocio {
     public String getAll(String email) {
         int usuario_id = usuarioDato.idByEmail(email);
         if (usuario_id == -1) {
-            return "El usuario no existe o ya tiene un carrito, por favor elimine el carrito para crear uno nuevo.";
+            return "El usuario no existe o no tiene un carrito.";
         }
         return carritoDato.getAll(usuario_id);
     }
