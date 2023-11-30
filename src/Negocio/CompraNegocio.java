@@ -1,21 +1,24 @@
 package Negocio;
 
 import Datos.CompraDato;
+import Datos.ProveedorDato;
 import Utils.Validate;
 
 public class CompraNegocio {
     private String respuesta;
 
     private CompraDato compraDato;
+    private ProveedorDato proveedorDato;
 
     public CompraNegocio() {
         compraDato = new CompraDato();
+        proveedorDato = new ProveedorDato();
     }
 
     public String create(String id) {
-        // Validar que es un id de un proveedor
-        if (this.respuesta != null) {
-            return this.respuesta;
+        boolean proveedor_exist = proveedorDato.exist(Integer.parseInt(id));
+        if (proveedor_exist) {
+            return "El proveedor no existe.";
         }
         compraDato = new CompraDato(0, Integer.parseInt(id));
         if (compraDato.create()) {

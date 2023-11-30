@@ -9,21 +9,18 @@ import java.util.LinkedList;
 import Servicios.ConexionDB;
 
 public class SalidaDetalleDato {
-    private final ConexionDB conexion;
-    private SalidaDato salidaDato;
+    private final ConexionDB conexion;    
 
     private int cantidad;
     private int salida_id;
     private int producto_id;
 
     public SalidaDetalleDato() {
-        conexion = new ConexionDB();
-        salidaDato = new SalidaDato();
+        conexion = new ConexionDB();        
     }
 
     public SalidaDetalleDato(int cantidad, int salida_id, int producto_id) {
-        conexion = new ConexionDB();
-        salidaDato = new SalidaDato();
+        conexion = new ConexionDB();        
         this.cantidad = cantidad;
         this.salida_id = salida_id;
         this.producto_id = producto_id;
