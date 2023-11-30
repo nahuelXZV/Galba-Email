@@ -8,30 +8,30 @@ import java.util.LinkedList;
 
 import Servicios.ConexionDB;
 
-public class IngresoDetalleDato {
-    private final ConexionDB conexion;
+public class SalidaDetalleDato {
+    private final ConexionDB conexion;    
 
     private int cantidad;
-    private int ingreso_id;
+    private int salida_id;
     private int producto_id;
 
-    public IngresoDetalleDato() {
-        conexion = new ConexionDB();
+    public SalidaDetalleDato() {
+        conexion = new ConexionDB();        
     }
 
-    public IngresoDetalleDato(int cantidad, int ingreso_id, int producto_id) {
-        conexion = new ConexionDB();
+    public SalidaDetalleDato(int cantidad, int salida_id, int producto_id) {
+        conexion = new ConexionDB();        
         this.cantidad = cantidad;
-        this.ingreso_id = ingreso_id;
+        this.salida_id = salida_id;
         this.producto_id = producto_id;
     }
 
     // Funciones
     public boolean create() {
-        String sql = "INSERT INTO ingreso_detalle (cantidad, ingreso_id, producto_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO salida_detalle (cantidad, salida_id, producto_id) VALUES (?, ?, ?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, this.cantidad);
-            ps.setInt(2, this.ingreso_id);
+            ps.setInt(2, this.salida_id);
             ps.setInt(3, this.producto_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -42,10 +42,10 @@ public class IngresoDetalleDato {
     }
 
     public boolean update(int id, int cantidad) {
-        int cantidad_anterior = getCantidad(id);
-        String sql = "UPDATE ingreso_detalle SET cantidad = ? WHERE id = ?";
+        int cantidad_anterior = getCantidad(salida_id);
+        String sql = "UPDATE salida_detalle SET cantidad = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, cantidad_anterior + cantidad);
+            ps.setInt(1, cantidad_anterior - cantidad);
             ps.setInt(2, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -56,7 +56,7 @@ public class IngresoDetalleDato {
     }
 
     public boolean delete(int id) {
-        String sql = "DELETE FROM ingreso_detalle WHERE id = ?";
+        String sql = "DELETE FROM salida_detalle WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -67,10 +67,10 @@ public class IngresoDetalleDato {
         }
     }
 
-    public boolean deleteByingreso(int ingreso_id) {
-        String sql = "DELETE FROM ingreso_detalle WHERE ingreso_id = ?";
+    public boolean deleteBysalida(int salida_id) {
+        String sql = "DELETE FROM salida_detalle WHERE salida_id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, ingreso_id);
+            ps.setInt(1, salida_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -85,7 +85,7 @@ public class IngresoDetalleDato {
             java.sql.Statement consulta;
             ResultSet resultado = null;
             String query = "";
-            query = "SELECT cantidad FROM ingreso_detalle WHERE id = " + id;
+            query = "SELECT cantidad FROM salida_detalle WHERE id = " + id;
             Connection con = conexion.connect();
             consulta = con.createStatement();
             resultado = consulta.executeQuery(query);
@@ -100,17 +100,17 @@ public class IngresoDetalleDato {
         return cantidad;
     }
 
-    public LinkedList<String> getIngresoDetalle(int ingreso_id) {
-        String sql = "SELECT cantidad, motivo, producto_id FROM ingreso_detalle WHERE ingreso_id = ?";
+    public LinkedList<String> getSalidaDetalle(int salida_id) {
+        String sql = "SELECT cantidad, motivo, producto_id FROM salida_detalle WHERE ingreso_id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, ingreso_id);
+            ps.setInt(1, salida_id);
             java.sql.ResultSet rs = ps.executeQuery();
-            LinkedList<String> ingresoDetalle = new LinkedList<String>();
+            LinkedList<String> salidaDetalle = new LinkedList<String>();
             while (rs.next()) {
-                ingresoDetalle.add(rs.getInt("cantidad") + "," + rs.getString("motivo") + ","
+                salidaDetalle.add(rs.getInt("cantidad") + "," + rs.getString("motivo") + ","
                         + rs.getInt("producto_id"));
             }
-            return ingresoDetalle;
+            return salidaDetalle;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;

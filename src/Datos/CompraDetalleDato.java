@@ -7,41 +7,40 @@ import java.util.LinkedList;
 
 import Servicios.ConexionDB;
 
-public class CarritoDetalleDato {
+public class CompraDetalleDato {
     private final ConexionDB conexion;
-    private CarritoDato carritoDato;
+    private CompraDato compraDato;
 
     private int cantidad;
     private float precio;
-    private int carrito_id;
+    private int compra_id;
     private int producto_id;
 
-    // Constructores
-    public CarritoDetalleDato() {
+    public CompraDetalleDato() {
         conexion = new ConexionDB();
-        carritoDato = new CarritoDato();
+        compraDato = new CompraDato();
     }
 
-    public CarritoDetalleDato(int cantidad, float precio, int carrito_id, int producto_id) {
+    public CompraDetalleDato(int cantidad, float precio, int compra_id, int producto_id) {
         conexion = new ConexionDB();
-        carritoDato = new CarritoDato();
+        compraDato = new CompraDato();
         this.cantidad = cantidad;
         this.precio = precio;
-        this.carrito_id = carrito_id;
+        this.compra_id = compra_id;
         this.producto_id = producto_id;
     }
 
     // Funciones
     public boolean create() {
-        String sql = "INSERT INTO carrito_detalle (cantidad, precio, carrito_id, producto_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO compra_detalle (cantidad, precio, compra_id, producto_id) VALUES (?, ?, ?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, this.cantidad);
             ps.setFloat(2, this.precio);
-            ps.setInt(3, this.carrito_id);
+            ps.setInt(3, this.compra_id);
             ps.setInt(4, this.producto_id);
             int rowsAffected = ps.executeUpdate();
             Float monto = this.precio * this.cantidad;
-            if (rowsAffected > 0 && carritoDato.update(this.carrito_id, monto)) {
+            if (rowsAffected > 0 && compraDato.update(this.compra_id, monto)) {
                 return true;
             }
             return false;
@@ -52,7 +51,7 @@ public class CarritoDetalleDato {
     }
 
     public boolean delete(int id) {
-        String sql = "DELETE FROM carrito_detalle WHERE id = ?";
+        String sql = "DELETE FROM compra_detalle WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -63,10 +62,10 @@ public class CarritoDetalleDato {
         }
     }
 
-    public boolean deleteBycarrito(int carrito_id) {
-        String sql = "DELETE FROM carrito_detalle WHERE carrito_id = ?";
+    public boolean deleteBycompra(int ingreso_id) {
+        String sql = "DELETE FROM compra_detalle WHERE compra_id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, carrito_id);
+            ps.setInt(1, ingreso_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -75,17 +74,17 @@ public class CarritoDetalleDato {
         }
     }
 
-    public LinkedList<String> getCarritoDetalle(int carrito_id) {
-        String sql = "SELECT cantidad, precio, producto_id FROM carrito_detalle WHERE carrito_id = ?";
+    public LinkedList<String> getCompraDetalle(int compra_id) {
+        String sql = "SELECT cantidad, precio, producto_id FROM compra_detalle WHERE compra_id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, carrito_id);
+            ps.setInt(1, compra_id);
             java.sql.ResultSet rs = ps.executeQuery();
-            LinkedList<String> carritoDetalle = new LinkedList<String>();
+            LinkedList<String> compraDetalle = new LinkedList<String>();
             while (rs.next()) {
-                carritoDetalle.add(rs.getInt("cantidad") + "," + rs.getFloat("precio") + ","
+                compraDetalle.add(rs.getInt("cantidad") + "," + rs.getString("precio") + ","
                         + rs.getInt("producto_id"));
             }
-            return carritoDetalle;
+            return compraDetalle;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
