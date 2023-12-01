@@ -4,8 +4,15 @@ import java.util.LinkedList;
 
 import Negocio.CarritoDetalleNegocio;
 import Negocio.CarritoNegocio;
+import Negocio.CompraDetalleNegocio;
+import Negocio.CompraNegocio;
+import Negocio.IngresoDetalleNegocio;
+import Negocio.IngresoNegocio;
 import Negocio.PedidoNegocio;
 import Negocio.ProductoNegocio;
+import Negocio.ProveedorNegocio;
+import Negocio.SalidaDetalleNegocio;
+import Negocio.SalidaNegocio;
 import Negocio.UsuarioNegocio;
 import Servicios.SmtpService;
 import Utils.EmailHandler;
@@ -17,7 +24,14 @@ public class Route {
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         CarritoNegocio carritoNegocio = new CarritoNegocio();
         CarritoDetalleNegocio carritoDetalleNegocio = new CarritoDetalleNegocio();
+        CompraNegocio compraNegocio = new CompraNegocio();
+        CompraDetalleNegocio compraDetalleNegocio = new CompraDetalleNegocio();
+        IngresoNegocio ingresoNegocio = new IngresoNegocio();
+        IngresoDetalleNegocio ingresoDetalleNegocio = new IngresoDetalleNegocio();
+        SalidaNegocio salidaNegocio = new SalidaNegocio();
+        SalidaDetalleNegocio salidaDetalleNegocio = new SalidaDetalleNegocio();
         ProductoNegocio productoNegocio = new ProductoNegocio();
+        ProveedorNegocio proveedorNegocio = new ProveedorNegocio();
         PedidoNegocio pedidoNegocio = new PedidoNegocio();
         String response = "";
 
@@ -103,6 +117,107 @@ public class Route {
                 response = productoNegocio.delete(parametros.get(0));
                 smtp.sendEmail(response, emailHandler.remitente);
                 break;
+
+            // Compra
+            case "LISTCOM":
+                response = compraNegocio.getAllCom(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DETCOM":
+                response = compraNegocio.getAll(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "NEWCOM":
+                response = compraNegocio.create(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DELCOM":
+                response = compraNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+
+            case "ADDCOMPROD":
+                response = compraDetalleNegocio.create(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DELCOMPROD":
+                response = compraDetalleNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+
+            // Proveedor
+            case "LISTPROV":
+                response = proveedorNegocio.getAll(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "ADDPROV":
+                response = proveedorNegocio.createProveedor(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "EDITPROV":
+                response = proveedorNegocio.updateProveedor(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DELPROV":
+                response = proveedorNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+
+            // ------- Inventario ------------
+            // Ingreso
+            case "LISTING":
+                response = ingresoNegocio.getAllIng(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DETING":
+                response = salidaNegocio.getAll(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "NEWING":
+                response = ingresoNegocio.create(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DELING":
+                response = ingresoNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+
+            case "ADDINGPROD":
+                response = ingresoDetalleNegocio.create(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DELINGPROD":
+                response = ingresoDetalleNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+
+            // Salida
+            case "LISTSAL":
+                response = salidaNegocio.getAllSal(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DETSAL":
+                response = salidaNegocio.getAll(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "NEWSAL":
+                response = salidaNegocio.create(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DELSAL":
+                response = salidaNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+
+            case "ADDSALPROD":
+                response = salidaDetalleNegocio.create(parametros);
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            case "DELSALPROD":
+                response = salidaDetalleNegocio.delete(parametros.get(0));
+                smtp.sendEmail(response, emailHandler.remitente);
+                break;
+            // ---------- Fin Inventario --------------------
             default:
                 smtp.sendEmailError(
                         "Error",

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import Servicios.ConexionDB;
 
@@ -90,6 +91,55 @@ public class IngresoDato {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    public String getAllIng(LinkedList<String> params) {
+        String tabla = "";
+        try {
+            java.sql.Statement consulta;
+            ResultSet resultado = null;
+            tabla = "<h1>Lista de ingresos</h1>\n"
+                    + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
+                    + "\n"
+                    + "  <tr>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">FECHA</th>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">HORA</th>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">MOTIVO</th>\n"
+                    + "\n";
+            String query = "";
+            if (params.size() == 0)
+                query = "SELECT id, fecha, hora, motivo FROM ingreso";
+            else
+                query = "SELECT id, fecha, hora, motivo FROM ingreso WHERE "
+                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
+            Connection con = conexion.connect();
+            consulta = con.createStatement();
+            resultado = consulta.executeQuery(query);
+            ResultSetMetaData rsmd = resultado.getMetaData();
+            int cantidadColumnas = rsmd.getColumnCount();
+            while (resultado.next()) {
+                tabla = tabla + "  <tr>\n" + "\n";
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    tabla = tabla
+                            + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
+                            + resultado.getString(i + 1) + "</td>\n"
+                            + "\n";
+                }
+                tabla = tabla + "  </tr>\n" + "\n";
+            }
+            tabla = tabla + "\n" + "</table>";
+            consulta.close();
+            con.close();
+        } catch (SQLException e) {
+            tabla = "No se pudieron listar los datos.";
+            System.out.println(e.getMessage());
+        }
+        return tabla;
     }
 
     public String getAll(int id) {

@@ -1,5 +1,7 @@
 package Negocio;
 
+import java.util.LinkedList;
+
 import Datos.SalidaDato;
 import Utils.Validate;
 
@@ -37,6 +39,10 @@ public class SalidaNegocio {
             this.respuesta = "No se pudo eliminar.";
         }
         return this.respuesta;
+    }
+
+    public String getAllSal(LinkedList<String> params) {
+        return salidaDato.getAllSal(params);
     }
 
     public String getAll(String id) {

@@ -1,5 +1,7 @@
 package Negocio;
 
+import java.util.LinkedList;
+
 import Datos.IngresoDato;
 import Utils.Validate;
 
@@ -37,6 +39,10 @@ public class IngresoNegocio {
             this.respuesta = "No se pudo eliminar.";
         }
         return this.respuesta;
+    }
+
+    public String getAllIng(LinkedList<String> params) {
+        return ingresoDato.getAllIng(params);
     }
 
     public String getAll(String id) {
