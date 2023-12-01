@@ -39,13 +39,15 @@ public class GalbaEmail {
                 // continue;
                 return;
             }
-            if (!Auth.auth(emailHandler.remitente)) {
-                smtp.sendEmailError("Error", "Remitente no autorizado", emailHandler.remitente);
+            String comando = emailHandler.getComando();
+            if (!Auth.auth(emailHandler.remitente) && !comando.equals("ADDCLIENT")) {
+                smtp.sendEmailError("Error", "Usuario no autorizado", emailHandler.remitente);
                 System.out.println("**********************************************");
                 // continue;
                 return;
             }
-            route.routes(emailHandler);
+            String response = route.routes(emailHandler);
+            smtp.sendEmail(response, emailHandler.remitente);
         } catch (Exception e) {
             System.out.println("Error al obtener emails");
         }

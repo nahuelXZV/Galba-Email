@@ -24,8 +24,8 @@ public class PedidoNegocio {
         }
         pedidoDato = new PedidoDato(usuario_id);
         if (pedidoDato.create()) {
-            int id = pedidoDato.getLastPedido(usuario_id);
-            this.respuesta = pedidoDato.getQR(id, nit);
+            int pedido_id = pedidoDato.getLastPedido(usuario_id);
+            this.respuesta = pedidoDato.getQR(pedido_id, usuario_id, nit);
         } else {
             this.respuesta = "No se pudo crear.";
         }

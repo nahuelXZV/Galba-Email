@@ -142,6 +142,9 @@ public class CarritoDato {
 
     public String getAll(int id) {
         String tabla = "";
+        int carrito = this.getIdCarritoByUser(id);
+        if (carrito == 0)
+            return "No tiene un carrito creado.";
         try {
             java.sql.Statement consulta;
             ResultSet resultado = null;

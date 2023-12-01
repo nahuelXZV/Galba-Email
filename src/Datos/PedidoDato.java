@@ -98,7 +98,7 @@ public class PedidoDato {
         }
     }
 
-    public String getQR(int pedido_id, String nit) {
+    public String getQR(int pedido_id, int usuario_id, String nit) {
         try {
             java.sql.Statement consulta;
             ResultSet resultado = null;
@@ -116,7 +116,8 @@ public class PedidoDato {
             }
             consulta.close();
             con.close();
-            String qr = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + nit;
+            String qr = "http://tecno-web-254210f85ec2.herokuapp.com/pago_facil/pagar/" + usuario_id + "/" + pedido_id
+                    + "/" + nit;
             String response = "<h1>Gracias por su compra</h1>\n" + "<h2>Detalle del pedido</h2>\n" + "ID: " + this.id
                     + ".<br>"
                     + "Fecha: " + this.fecha + ".<br>" + "Hora: " + this.hora + ".<br>" + "Monto Total: "
@@ -158,7 +159,8 @@ public class PedidoDato {
             }
             response = response + "\n" + "</table> <br/>";
             response = response + "<h2>Para completar el pago escanee el codigo QR</h2>\n";
-            response = response + "<img src=\"" + qr + "\" width=\"150\" height=\"150\">";
+            response = response + "<br/>";
+            response = response + qr + "<br/>";
             consulta.close();
             con.close();
             return response;

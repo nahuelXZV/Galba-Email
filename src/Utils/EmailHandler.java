@@ -23,9 +23,9 @@ public class EmailHandler {
         int parentesis1 = subject.indexOf("[");
         int parentesis2 = subject.indexOf("]");
         int espacio = subject.indexOf(" ");
-        System.out.println("parentesis1: " + parentesis1);
-        System.out.println("parentesis2: " + parentesis2);
-        System.out.println("espacio: " + espacio);
+        // System.out.println("parentesis1: " + parentesis1);
+        // System.out.println("parentesis2: " + parentesis2);
+        // System.out.println("espacio: " + espacio);
         if (parentesis1 == -1 || parentesis2 == -1) {
             this.messageError = "No se reconoce el formato indicado. Verifique que está utilizando los corchetes( [] ) para realizar la petición.";
             return false;

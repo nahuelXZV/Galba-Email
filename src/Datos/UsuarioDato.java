@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import Servicios.ConexionDB;
 
@@ -19,48 +22,47 @@ public class UsuarioDato {
     private String direccion;
     private String telefono;
     private String cargo;
-    private boolean isCliente;
-    private boolean isPersonal;
-    private boolean isAdministrador;
+    private boolean es_cliente;
+    private boolean es_personal;
+    private boolean es_administrador;
 
     public UsuarioDato() {
         conexion = new ConexionDB();
     }
 
-    public UsuarioDato(int id, String nombre, String correo, String contraseña, String cargo, boolean isPersonal,
-            boolean isAdministrador) {
+    public UsuarioDato(int id, String nombre, String correo, String contraseña, String cargo, boolean es_personal,
+            boolean es_administrador) {
         conexion = new ConexionDB();
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
-        this.contraseña = contraseña;
+        this.contraseña = this.hashPassword(contraseña);
         this.cargo = cargo;
-        this.isPersonal = isPersonal;
-        this.isAdministrador = isAdministrador;
+        this.es_personal = es_personal;
+        this.es_administrador = es_administrador;
     }
 
-    public UsuarioDato(int id, String nombre, String correo, String contraseña, String direccion, String telefono,
-            boolean isCliente) {
+    public UsuarioDato(int id, String nombre, String correo, String contraseña, String direccion, String telefono) {
         conexion = new ConexionDB();
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
-        this.contraseña = contraseña;
+        this.contraseña = this.hashPassword(contraseña);
         this.direccion = direccion;
         this.telefono = telefono;
-        this.isCliente = isCliente;
+        this.es_cliente = true;
     }
 
     // Funciones
     public boolean createPersonal() {
-        String sql = "INSERT INTO usuario (nombre , correo, contraseña, cargo, isPersonal, isAdministrador) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuario (nombre , correo, contraseña, cargo, es_personal, es_administrador) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-            ps.setString(2, correo);
-            ps.setString(3, contraseña);
-            ps.setString(4, cargo);
-            ps.setBoolean(5, isPersonal);
-            ps.setBoolean(6, isAdministrador);
+            ps.setString(1, this.nombre);
+            ps.setString(2, this.correo);
+            ps.setString(3, this.contraseña);
+            ps.setString(4, this.cargo);
+            ps.setBoolean(5, this.es_personal);
+            ps.setBoolean(6, this.es_administrador);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -70,14 +72,14 @@ public class UsuarioDato {
     }
 
     public boolean createCliente() {
-        String sql = "INSERT INTO usuario (nombre , correo, contraseña, direccion, telefono, isCliente) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuario (nombre , correo, contraseña, direccion, telefono, es_cliente) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-            ps.setString(2, correo);
-            ps.setString(3, contraseña);
-            ps.setString(4, direccion);
-            ps.setString(5, telefono);
-            ps.setBoolean(6, isCliente);
+            ps.setString(1, this.nombre);
+            ps.setString(2, this.correo);
+            ps.setString(3, this.contraseña);
+            ps.setString(4, this.direccion);
+            ps.setString(5, this.telefono);
+            ps.setBoolean(6, this.es_cliente);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -87,15 +89,15 @@ public class UsuarioDato {
     }
 
     public boolean updatePersonal() {
-        String sql = "UPDATE usuario SET nombre = ?, correo = ?, contraseña = ?, cargo = ?, isPersonal = ?, isAdministrador = ? WHERE id = ?";
+        String sql = "UPDATE usuario SET nombre = ?, correo = ?, contraseña = ?, cargo = ?, es_personal = ?, es_administrador = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-            ps.setString(2, correo);
-            ps.setString(3, contraseña);
-            ps.setString(4, cargo);
-            ps.setBoolean(5, isPersonal);
-            ps.setBoolean(6, isAdministrador);
-            ps.setInt(7, id);
+            ps.setString(1, this.nombre);
+            ps.setString(2, this.correo);
+            ps.setString(3, this.contraseña);
+            ps.setString(4, this.cargo);
+            ps.setBoolean(5, this.es_personal);
+            ps.setBoolean(6, this.es_administrador);
+            ps.setInt(7, this.id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -105,15 +107,15 @@ public class UsuarioDato {
     }
 
     public boolean updateCliente() {
-        String sql = "UPDATE usuario SET nombre = ?, correo = ?, contraseña = ?, direccion = ?, telefono = ?, isCliente = ? WHERE id = ?";
+        String sql = "UPDATE usuario SET nombre = ?, correo = ?, contraseña = ?, direccion = ?, telefono = ?, es_cliente = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-            ps.setString(2, correo);
-            ps.setString(3, contraseña);
-            ps.setString(4, direccion);
-            ps.setString(5, telefono);
-            ps.setBoolean(6, isCliente);
-            ps.setInt(7, id);
+            ps.setString(1, this.nombre);
+            ps.setString(2, this.correo);
+            ps.setString(3, this.contraseña);
+            ps.setString(4, this.direccion);
+            ps.setString(5, this.telefono);
+            ps.setBoolean(6, this.es_cliente);
+            ps.setInt(7, this.id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -165,11 +167,69 @@ public class UsuarioDato {
         String sql = "SELECT * FROM usuario WHERE correo = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, correo);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return true;
+            else
+                return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    public String show(int id) {
+        String sql = "SELECT * FROM usuario WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String tabla = "<h1>Perfil</h1>\n"
+                        + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
+                        + "\n"
+                        + "  <tr>\n"
+                        + "\n"
+                        + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
+                        + "\n"
+                        + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
+                        + "\n"
+                        + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CORREO</th>\n"
+                        + "\n"
+                        + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">DIRECCION</th>\n"
+                        + "\n"
+                        + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">TELEFONO</th>\n"
+                        + "\n"
+                        + "</tr>\n";
+
+                tabla = tabla + "  <tr>\n" + "\n";
+                tabla = tabla
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
+                        + rs.getString("id") + "</td>\n"
+                        + "\n";
+                tabla = tabla
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
+                        + rs.getString("nombre") + "</td>\n"
+                        + "\n";
+                tabla = tabla
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
+                        + rs.getString("correo") + "</td>\n"
+                        + "\n";
+                tabla = tabla
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
+                        + rs.getString("direccion") + "</td>\n"
+                        + "\n";
+                tabla = tabla
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
+                        + rs.getString("telefono") + "</td>\n"
+                        + "\n";
+                tabla = tabla + "  </tr>\n" + "\n";
+                tabla = tabla + "\n" + "</table>";
+                return tabla;
+            } else
+                return "No se encontro el usuario.";
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return "Error al obtener usuario";
         }
     }
 
@@ -240,4 +300,17 @@ public class UsuarioDato {
         return tabla;
     }
 
+    public String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

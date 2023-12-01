@@ -1,0 +1,22 @@
+// Crear cliente
+ADDCLIENT ["Lucas Rios", "12346798", "Calle Potosi", "653265622"]
+
+// Editar cliente
+EDITCLIENT ["Lucas Rios Mendoza", "12346798", "Calle Potosi II", "653265622"]
+
+// Eliminar cliente
+DELETECLIENT []
+
+
+// Listar productos
+LISTPROD []
+
+// Crear producto
+ADDPROD ["iphone 15", "", "", "", "", "", ""]
+
+
+// Listar carrito
+LISTCART []
+
+// Agregar al carrito
+ADDCART ["12346798", "1", "2"]
