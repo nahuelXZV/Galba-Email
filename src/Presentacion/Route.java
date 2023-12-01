@@ -4,8 +4,15 @@ import java.util.LinkedList;
 
 import Negocio.CarritoDetalleNegocio;
 import Negocio.CarritoNegocio;
+import Negocio.CompraDetalleNegocio;
+import Negocio.CompraNegocio;
+import Negocio.IngresoDetalleNegocio;
+import Negocio.IngresoNegocio;
 import Negocio.PedidoNegocio;
 import Negocio.ProductoNegocio;
+import Negocio.ProveedorNegocio;
+import Negocio.SalidaDetalleNegocio;
+import Negocio.SalidaNegocio;
 import Negocio.UsuarioNegocio;
 import Utils.EmailHandler;
 
@@ -15,7 +22,14 @@ public class Route {
         UsuarioNegocio usuarioNegocio = new UsuarioNegocio();
         CarritoNegocio carritoNegocio = new CarritoNegocio();
         CarritoDetalleNegocio carritoDetalleNegocio = new CarritoDetalleNegocio();
+        CompraNegocio compraNegocio = new CompraNegocio();
+        CompraDetalleNegocio compraDetalleNegocio = new CompraDetalleNegocio();
+        IngresoNegocio ingresoNegocio = new IngresoNegocio();
+        IngresoDetalleNegocio ingresoDetalleNegocio = new IngresoDetalleNegocio();
+        SalidaNegocio salidaNegocio = new SalidaNegocio();
+        SalidaDetalleNegocio salidaDetalleNegocio = new SalidaDetalleNegocio();
         ProductoNegocio productoNegocio = new ProductoNegocio();
+        ProveedorNegocio proveedorNegocio = new ProveedorNegocio();
         PedidoNegocio pedidoNegocio = new PedidoNegocio();
 
         String comando = emailHandler.getComando();
@@ -52,8 +66,6 @@ public class Route {
         }
 
         if (comando.equals("DELCAR")) {
-            if (parametros.size() != 1)
-                return "Debe ingresar el id del carrito a eliminar.";
             return carritoNegocio.delete(parametros.get(0));
         }
 
@@ -85,7 +97,7 @@ public class Route {
         }
 
         // EMPLEADOS
-        Boolean isEmpleado = usuarioNegocio.validateRol(emailHandler.remitente, "isPersonal", "true");
+        Boolean isEmpleado = usuarioNegocio.validateRol(emailHandler.remitente, "es_personal", "true");
 
         /* Gestionar productos */
         if (comando.equals("ADDPROD") && isEmpleado) {
@@ -99,13 +111,104 @@ public class Route {
         if (comando.equals("DELPROD") && isEmpleado) {
             return productoNegocio.delete(parametros.get(0));
         }
+
+        /* Gestionar proveedor */
+        if (comando.equals("ADDPROV") && isEmpleado) {
+            return proveedorNegocio.createProveedor(parametros);
+        }
+
+        if (comando.equals("EDITPROV") && isEmpleado) {
+            return proveedorNegocio.updateProveedor(parametros);
+        }
+
+        if (comando.equals("DELPROV") && isEmpleado) {
+            return proveedorNegocio.delete(parametros.get(0));
+        }
+
+        /* Gestionar Ingreso */
+        if (comando.equals("LISTING") && isEmpleado) {
+            return ingresoNegocio.getAllIng(parametros);
+        }
+
+        if (comando.equals("DETING") && isEmpleado) {
+            return ingresoNegocio.getAll(parametros.get(0));
+        }
+
+        if (comando.equals("NEWING") && isEmpleado) {
+            return ingresoNegocio.create(parametros.get(0));
+        }
+
+        if (comando.equals("DELING") && isEmpleado) {
+            return ingresoNegocio.delete(parametros.get(0));
+        }
+
+        /* Gestionar Ingreso Detalle */
+        if (comando.equals("LISTINGPROD") && isEmpleado) {
+            return ingresoDetalleNegocio.create(parametros);
+        }
+
+        if (comando.equals("DELINGPROD") && isEmpleado) {
+            return ingresoDetalleNegocio.delete(parametros.get(0));
+        }
+        /* Gestionar Salida */
+        if (comando.equals("LISTSAL") && isEmpleado) {
+            return salidaNegocio.getAllSal(parametros);
+        }
+
+        if (comando.equals("DETSAL") && isEmpleado) {
+            return salidaNegocio.getAll(parametros.get(0));
+        }
+
+        if (comando.equals("NEWSAL") && isEmpleado) {
+            return salidaNegocio.create(parametros.get(0));
+        }
+
+        if (comando.equals("DELSAL") && isEmpleado) {
+            return salidaNegocio.delete(parametros.get(0));
+        }
+
+        /* Gestionar Ingreso Detalle */
+        if (comando.equals("LISTSALPROD") && isEmpleado) {
+            return salidaDetalleNegocio.create(parametros);
+        }
+
+        if (comando.equals("DELSALPROD") && isEmpleado) {
+            return salidaDetalleNegocio.delete(parametros.get(0));
+        }
+
+        /* Gestionar Compra */
+        if (comando.equals("LISTCOM") && isEmpleado) {
+            return compraNegocio.getAllCom(parametros);
+
+        }
+        if (comando.equals("DETCOM") && isEmpleado) {
+            return compraNegocio.getAll(parametros.get(0));
+        }
+
+        if (comando.equals("NEWCOM") && isEmpleado) {
+            return compraNegocio.create(parametros.get(0));
+        }
+
+        if (comando.equals("DELCOM") && isEmpleado) {
+            return compraNegocio.delete(parametros.get(0));
+        }
+
+        /* Gestionar Ingreso Detalle */
+        if (comando.equals("LISTCOMPROD") && isEmpleado) {
+            return compraDetalleNegocio.create(parametros);
+        }
+
+        if (comando.equals("DELCOMPROD") && isEmpleado) {
+            return compraDetalleNegocio.delete(parametros.get(0));
+        }
+
         /* Gestionar usuario */
         if (comando.equals("EDITUSER") && isEmpleado) {
             return usuarioNegocio.updatePersonal(parametros);
         }
 
         // ADMINISTRADOR
-        Boolean isAdministrador = usuarioNegocio.validateRol(emailHandler.remitente, "isAdministrador", "true");
+        Boolean isAdministrador = usuarioNegocio.validateRol(emailHandler.remitente, "es_administrador", "true");
         /* Gestionar usuario */
         if (comando.equals("LISTUSER") && isAdministrador) {
             return usuarioNegocio.getAll(parametros);
