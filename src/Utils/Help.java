@@ -164,7 +164,7 @@ public class Help {
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Nueva compra</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">NEWCOM [MOTIVO: STRING] </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">NEWCOM [ID_PROVEEDOR: NUMBER] </td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar compra</td> \n \n"
