@@ -6,8 +6,6 @@ import Datos.IngresoDato;
 import Utils.Validate;
 
 public class IngresoNegocio {
-    private String respuesta;
-
     private IngresoDato ingresoDato;
 
     public IngresoNegocio() {
@@ -15,41 +13,51 @@ public class IngresoNegocio {
     }
 
     public String create(String motivo) {
-        if (this.respuesta != null) {
-            return this.respuesta;
+        try {
+            if (motivo == null) {
+                return "El motivo no puede ser nulo.";
+            }
+            ingresoDato = new IngresoDato(motivo);
+            if (ingresoDato.create()) {
+                return "Creado exitosamente.";
+            }
+            return "No se pudo crear, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        ingresoDato = new IngresoDato(motivo);
-        if (ingresoDato.create()) {
-            this.respuesta = "Creado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo crear.";
-        }
-        return this.respuesta;
     }
 
     public String delete(String id) {
-        if (!Validate.isNumber(id)) {
-            this.respuesta = "El id debe ser un numero";
-            return this.respuesta;
+        try {
+            if (!Validate.isNumber(id)) {
+                return "El id debe ser un numero";
+            }
+            ingresoDato = new IngresoDato();
+            if (ingresoDato.delete(Integer.parseInt(id))) {
+                return "Eliminado exitosamente.";
+            }
+            return "No se pudo eliminar, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        ingresoDato = new IngresoDato();
-        if (ingresoDato.delete(Integer.parseInt(id))) {
-            this.respuesta = "Eliminado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo eliminar.";
-        }
-        return this.respuesta;
     }
 
     public String getAllIng(LinkedList<String> params) {
-        return ingresoDato.getAllIng(params);
+        try {
+            return ingresoDato.getAllIng(params);
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
+        }
     }
 
     public String getAll(String id) {
-        if (!Validate.isNumber(id)) {
-            this.respuesta = "El id debe ser un numero";
-            return this.respuesta;
+        try {
+            if (!Validate.isNumber(id)) {
+                return "El id debe ser un numero";
+            }
+            return ingresoDato.getAll(Integer.parseInt(id));
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        return ingresoDato.getAll(Integer.parseInt(id));
     }
 }

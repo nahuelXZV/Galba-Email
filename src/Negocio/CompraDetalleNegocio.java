@@ -21,32 +21,35 @@ public class CompraDetalleNegocio {
     }
 
     public String create(LinkedList<String> params) {
-        this.validateCreate(params);
-        if (this.respuesta != null) {
-            return this.respuesta;
+        try {
+            this.validateCreate(params);
+            if (this.respuesta != null) {
+                return this.respuesta;
+            }
+            compraDetalleDato = new CompraDetalleDato(Integer.parseInt(params.get(0)), Float.parseFloat(params.get(1)),
+                    Integer.parseInt(params.get(2)), Integer.parseInt(params.get(3)));
+            if (compraDetalleDato.create()) {
+                return "Creado exitosamente.";
+            }
+            return "No se pudo crear, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        compraDetalleDato = new CompraDetalleDato(Integer.parseInt(params.get(0)), Float.parseFloat(params.get(1)),
-                Integer.parseInt(params.get(2)), Integer.parseInt(params.get(3)));
-        if (compraDetalleDato.create()) {
-            this.respuesta = "Creado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo crear.";
-        }
-        return this.respuesta;
     }
 
     public String delete(String id) {
-        if (!Validate.isNumber(id)) {
-            this.respuesta = "El id debe ser un numero";
-            return this.respuesta;
+        try {
+            if (!Validate.isNumber(id)) {
+                return "El id debe ser un numero";
+            }
+            compraDetalleDato = new CompraDetalleDato();
+            if (compraDetalleDato.delete(Integer.parseInt(id))) {
+                return "Eliminado exitosamente.";
+            }
+            return "No se pudo eliminar, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        compraDetalleDato = new CompraDetalleDato();
-        if (compraDetalleDato.delete(Integer.parseInt(id))) {
-            this.respuesta = "Eliminado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo eliminar.";
-        }
-        return this.respuesta;
     }
 
     private void validateCreate(LinkedList<String> params) {

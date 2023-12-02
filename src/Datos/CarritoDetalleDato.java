@@ -2,6 +2,7 @@ package Datos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
@@ -53,10 +54,15 @@ public class CarritoDetalleDato {
 
     public boolean delete(int id) {
         String sql = "DELETE FROM carrito_detalle WHERE id = ?";
+        Float monto = this.getMontoTotalDetalle(id);
+        int carrito_id = this.getCarritoIdByDetalleId(id);
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            if (rowsAffected > 0 && carritoDato.update(carrito_id, -monto)) {
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -75,11 +81,50 @@ public class CarritoDetalleDato {
         }
     }
 
+    public float getMontoTotalDetalle(int carrito_detalle_id) {
+        String sql = "SELECT SUM(precio * cantidad) AS monto FROM carrito_detalle WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, carrito_detalle_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat("monto");
+            }
+            return 0;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public boolean exist(int carrito_detalle_id) {
+        String sql = "SELECT * FROM carrito_detalle WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, carrito_detalle_id);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public int getCarritoIdByDetalleId(int carrito_detalle_id) {
+        String sql = "SELECT carrito_id FROM carrito_detalle WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, carrito_detalle_id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("carrito_id");
+            }
+            return 0;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     public LinkedList<String> getCarritoDetalle(int carrito_id) {
         String sql = "SELECT cantidad, precio, producto_id FROM carrito_detalle WHERE carrito_id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, carrito_id);
-            java.sql.ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             LinkedList<String> carritoDetalle = new LinkedList<String>();
             while (rs.next()) {
                 carritoDetalle.add(rs.getInt("cantidad") + "," + rs.getFloat("precio") + ","

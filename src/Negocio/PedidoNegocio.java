@@ -7,8 +7,6 @@ import Datos.UsuarioDato;
 import Utils.Validate;
 
 public class PedidoNegocio {
-    private String respuesta;
-
     private PedidoDato pedidoDato;
     private UsuarioDato usuarioDato;
 
@@ -18,42 +16,49 @@ public class PedidoNegocio {
     }
 
     public String create(String email, String nit) {
-        int usuario_id = usuarioDato.idByEmail(email);
-        if (usuario_id == -1) {
-            return "El usuario no existe.";
+        try {
+            int usuario_id = usuarioDato.idByEmail(email);
+            if (usuario_id == -1) {
+                return "El usuario no existe.";
+            }
+            pedidoDato = new PedidoDato(usuario_id);
+            if (pedidoDato.create()) {
+                int pedido_id = pedidoDato.getLastPedido(usuario_id);
+                return pedidoDato.getQR(pedido_id, usuario_id, nit);
+            }
+            return "No se pudo crear.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        pedidoDato = new PedidoDato(usuario_id);
-        if (pedidoDato.create()) {
-            int pedido_id = pedidoDato.getLastPedido(usuario_id);
-            this.respuesta = pedidoDato.getQR(pedido_id, usuario_id, nit);
-        } else {
-            this.respuesta = "No se pudo crear.";
-        }
-        return this.respuesta;
     }
 
     public String getOne(String id, String email) {
-        if (!Validate.isNumber(id)) {
-            this.respuesta = "El id debe ser un numero";
-            return this.respuesta;
+        try {
+            if (!Validate.isNumber(id)) {
+                return "El id debe ser un numero";
+            }
+            int usuario_id = usuarioDato.idByEmail(email);
+            if (usuario_id == -1) {
+                return "El usuario no existe.";
+            }
+            if (pedidoDato.exist(Integer.parseInt(id), usuario_id)) {
+                return pedidoDato.getOne(Integer.parseInt(id));
+            }
+            return "El pedido no existe.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        int usuario_id = usuarioDato.idByEmail(email);
-        if (usuario_id == -1) {
-            return "El usuario no existe o ya tiene un carrito, por favor elimine el carrito para crear uno nuevo.";
-        }
-        if (pedidoDato.exist(Integer.parseInt(id), usuario_id)) {
-            this.respuesta = pedidoDato.getOne(Integer.parseInt(id));
-        } else {
-            this.respuesta = "El pedido no existe.";
-        }
-        return this.respuesta;
     }
 
     public String getAll(LinkedList<String> params, String email) {
-        int usuario_id = usuarioDato.idByEmail(email);
-        if (usuario_id == -1) {
-            return "El usuario no existe o ya tiene un carrito, por favor elimine el carrito para crear uno nuevo.";
+        try {
+            int usuario_id = usuarioDato.idByEmail(email);
+            if (usuario_id == -1) {
+                return "El usuario no existe.";
+            }
+            return pedidoDato.getAll(params, usuario_id);
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        return pedidoDato.getAll(params, usuario_id);
     }
 }

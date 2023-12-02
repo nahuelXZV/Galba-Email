@@ -15,41 +15,51 @@ public class SalidaNegocio {
     }
 
     public String create(String motivo) {
-        if (this.respuesta != null) {
-            return this.respuesta;
+        try {
+            if (this.respuesta != null) {
+                return this.respuesta;
+            }
+            salidaDato = new SalidaDato(motivo);
+            if (salidaDato.create()) {
+                return "Creado exitosamente.";
+            }
+            return "No se pudo crear, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        salidaDato = new SalidaDato(motivo);
-        if (salidaDato.create()) {
-            this.respuesta = "Creado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo crear.";
-        }
-        return this.respuesta;
     }
 
     public String delete(String id) {
-        if (!Validate.isNumber(id)) {
-            this.respuesta = "El id debe ser un numero";
-            return this.respuesta;
+        try {
+            if (!Validate.isNumber(id)) {
+                return "El id debe ser un numero";
+            }
+            salidaDato = new SalidaDato();
+            if (salidaDato.delete(Integer.parseInt(id))) {
+                return "Eliminado exitosamente.";
+            }
+            return "No se pudo eliminar, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        salidaDato = new SalidaDato();
-        if (salidaDato.delete(Integer.parseInt(id))) {
-            this.respuesta = "Eliminado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo eliminar.";
-        }
-        return this.respuesta;
     }
 
     public String getAllSal(LinkedList<String> params) {
-        return salidaDato.getAllSal(params);
+        try {
+            return salidaDato.getAllSal(params);
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
+        }
     }
 
     public String getAll(String id) {
-        if (!Validate.isNumber(id)) {
-            this.respuesta = "El id debe ser un numero";
-            return this.respuesta;
+        try {
+            if (!Validate.isNumber(id)) {
+                return "El id debe ser un numero";
+            }
+            return salidaDato.getAll(Integer.parseInt(id));
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        return salidaDato.getAll(Integer.parseInt(id));
     }
 }

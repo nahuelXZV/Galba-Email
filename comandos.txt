@@ -12,11 +12,29 @@ DELETECLIENT []
 LISTPROD []
 
 // Crear producto
-ADDPROD ["iphone 15", "", "", "", "", "", ""]
+ADDPROD ["iphone 15", "https://i.blogs.es/1cc33c/iphone-15-analisis-aps-02/1366_2000.jpeg", "Mediano", "1500", "10", "Iphone 15 bla bla bla", "herramientas"]
 
+// Editar producto
+EDITPROD ["1", "iphone 15", "https://i.blogs.es/1cc33c/iphone-15-analisis-aps-02/1366_2000.jpeg", "Mediano", "1700", "Iphone 15 bla bla bla", "herramientas"]
+
+// Eliminar producto
+DELPROD ["1"]
+
+
+// Crear carrito
+NEWCAR []
+
+// Agregar al carrito
+ADDCARPROD ["2", "1"]
 
 // Listar carrito
 LISTCART []
 
-// Agregar al carrito
-ADDCART ["12346798", "1", "2"]
+// Eliminar del carrito
+DELCARPROD ["1"]
+
+// Listar pedidos
+LISTPED []
+
+// Crear pedido
+CONFPEDIDO ["123465"]

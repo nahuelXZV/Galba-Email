@@ -10,51 +10,60 @@ public class ProveedorNegocio {
     private ProveedorDato proveedorDato;
 
     public String createProveedor(LinkedList<String> params) {
-        this.validateCreateProveedor(params);
-        if (this.respuesta != null) {
-            return this.respuesta;
+        try {
+            this.validateCreateProveedor(params);
+            if (this.respuesta != null) {
+                return this.respuesta;
+            }
+            proveedorDato = new ProveedorDato(0, params.get(0), params.get(1), params.get(2),
+                    params.get(3), params.get(4));
+            if (proveedorDato.createProveedor()) {
+                return "Creado exitosamente.";
+            }
+            return "No se pudo crear, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error al crear proveedor";
         }
-        proveedorDato = new ProveedorDato(0, params.get(0), params.get(1), params.get(2),
-                params.get(3), params.get(4));
-        if (proveedorDato.createProveedor()) {
-            this.respuesta = "Creado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo crear.";
-        }
-        return this.respuesta;
     }
 
     public String updateProveedor(LinkedList<String> params) {
-        validateUpdateProveedor(params);
-        if (this.respuesta != null) {
-            return this.respuesta;
+        try {
+            validateUpdateProveedor(params);
+            if (this.respuesta != null) {
+                return this.respuesta;
+            }
+            proveedorDato = new ProveedorDato(0, params.get(0), params.get(1), params.get(2),
+                    params.get(3), params.get(4));
+            if (proveedorDato.updateProveedor()) {
+                return "Actualizado exitosamente.";
+            }
+            return "No se pudo actualizar, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error al actualizar proveedor";
         }
-        proveedorDato = new ProveedorDato(0, params.get(0), params.get(1), params.get(2),
-                params.get(3), params.get(4));
-        if (proveedorDato.updateProveedor()) {
-            this.respuesta = "Actualizado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo actualizar.";
-        }
-        return this.respuesta;
     }
 
     public String delete(String id) {
-        if (!Validate.isNumber(id)) {
-            this.respuesta = "El id debe ser un numero";
-            return this.respuesta;
+        try {
+            if (!Validate.isNumber(id)) {
+                return "El id debe ser un numero";
+            }
+            proveedorDato = new ProveedorDato();
+            if (proveedorDato.delete(Integer.parseInt(id))) {
+                return "Eliminado exitosamente.";
+            }
+            return "No se pudo eliminar, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error al eliminar proveedor";
         }
-        proveedorDato = new ProveedorDato();
-        if (proveedorDato.delete(Integer.parseInt(id))) {
-            this.respuesta = "Eliminado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo eliminar.";
-        }
-        return this.respuesta;
     }
 
     public String getAll(LinkedList<String> params) {
-        return proveedorDato.getAll(params);
+        try {
+            return proveedorDato.getAll(params);
+        } catch (Exception e) {
+            return "Error al obtener proveedores";
+        }
     }
 
     private void validateCreateProveedor(LinkedList<String> params) {

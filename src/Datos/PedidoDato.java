@@ -60,9 +60,8 @@ public class PedidoDato {
             if (rowsAffected > 0 && pedidoDetalleDato.createByCarrito(this.carrito_id, pedido_id)) {
                 carritoDato.delete(this.carrito_id);
                 return true;
-            } else {
-                return false;
             }
+            return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -118,6 +117,7 @@ public class PedidoDato {
             con.close();
             String qr = "http://tecno-web-254210f85ec2.herokuapp.com/pago_facil/pagar/" + usuario_id + "/" + pedido_id
                     + "/" + nit;
+
             String response = "<h1>Gracias por su compra</h1>\n" + "<h2>Detalle del pedido</h2>\n" + "ID: " + this.id
                     + ".<br>"
                     + "Fecha: " + this.fecha + ".<br>" + "Hora: " + this.hora + ".<br>" + "Monto Total: "
@@ -160,7 +160,7 @@ public class PedidoDato {
             response = response + "\n" + "</table> <br/>";
             response = response + "<h2>Para completar el pago escanee el codigo QR</h2>\n";
             response = response + "<br/>";
-            response = response + qr + "<br/>";
+            response = response + "<img src=\"" + qr + "\" width=\"400\" height=\"400\">";
             consulta.close();
             con.close();
             return response;

@@ -38,6 +38,18 @@ public class ProductoDato {
         this.categoria = categoria;
     }
 
+    public ProductoDato(int id, String nombre, String imagen, String tamaño, float precio,
+            String descripcion, String categoria) {
+        conexion = new ConexionDB();
+        this.id = id;
+        this.nombre = nombre;
+        this.imagen = imagen;
+        this.tamaño = tamaño;
+        this.precio = precio;
+        this.descripcion = descripcion;
+        this.categoria = categoria;
+    }
+
     // Funciones
     public boolean createProducto() {
         String sql = "INSERT INTO producto (nombre , imagen, tamaño, precio, cantidad, descripcion, categoria) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -58,16 +70,15 @@ public class ProductoDato {
     }
 
     public boolean updateProducto() {
-        String sql = "UPDATE usuario SET nombre = ?, imagen = ?, tamaño = ?, precio = ?, cantidad = ?, descripcion = ?, categoria = ? WHERE id = ?";
+        String sql = "UPDATE producto SET nombre = ?, imagen = ?, tamaño = ?, precio = ?, descripcion = ?, categoria = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
             ps.setString(2, imagen);
             ps.setString(3, tamaño);
             ps.setFloat(4, precio);
-            ps.setInt(5, cantidad);
-            ps.setString(6, descripcion);
-            ps.setString(7, categoria);
-            ps.setInt(8, id);
+            ps.setString(5, descripcion);
+            ps.setString(6, categoria);
+            ps.setInt(7, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {

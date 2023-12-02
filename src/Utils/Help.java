@@ -80,7 +80,7 @@ public class Help {
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar producto</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">EDITPROD [ID: NUMBER, NOMBRE: STRING, IMAGEN: URL, TAMAÑO: STRING, PRECIO: FLOAT, CANTIDAD: INTEGER, DESCRIPCION: STRING, CATEGORIA: STRING]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">EDITPROD [ID: NUMBER, NOMBRE: STRING, IMAGEN: URL, TAMAÑO: STRING, PRECIO: FLOAT, DESCRIPCION: STRING, CATEGORIA: STRING]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar producto</td> \n \n"

@@ -70,7 +70,7 @@ public class Route {
         }
 
         /* Gestionar Carrito Detalle */
-        if (comando.equals("LISTCARPROD")) {
+        if (comando.equals("ADDCARPROD")) {
             return carritoDetalleNegocio.create(parametros, emailHandler.remitente);
         }
 
@@ -97,7 +97,7 @@ public class Route {
         }
 
         // EMPLEADOS
-        Boolean isEmpleado = usuarioNegocio.validateRol(emailHandler.remitente, "es_personal", "true");
+        Boolean isEmpleado = usuarioNegocio.isPersonal(emailHandler.remitente);
 
         /* Gestionar productos */
         if (comando.equals("ADDPROD") && isEmpleado) {
@@ -208,7 +208,7 @@ public class Route {
         }
 
         // ADMINISTRADOR
-        Boolean isAdministrador = usuarioNegocio.validateRol(emailHandler.remitente, "es_administrador", "true");
+        Boolean isAdministrador = usuarioNegocio.isAdministrador(emailHandler.remitente);
         /* Gestionar usuario */
         if (comando.equals("LISTUSER") && isAdministrador) {
             return usuarioNegocio.getAll(parametros);

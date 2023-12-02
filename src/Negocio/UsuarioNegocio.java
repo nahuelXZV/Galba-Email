@@ -117,7 +117,11 @@ public class UsuarioNegocio {
     }
 
     public String getAll(LinkedList<String> params) {
-        return usuarioDato.getAll(params);
+        try {
+            return usuarioDato.getAll(params);
+        } catch (Exception e) {
+            return "Error al obtener usuarios";
+        }
     }
 
     public boolean auth(String email) {
@@ -127,8 +131,18 @@ public class UsuarioNegocio {
         return true;
     }
 
-    public boolean validateRol(String email, String rol, String atribute) {
-        return usuarioDato.validateRol(email, rol, atribute);
+    public boolean isPersonal(String email) {
+        if (!Validate.isEmail(email) || !usuarioDato.emailExist(email)) {
+            return false;
+        }
+        return usuarioDato.validateIsPersonal(email);
+    }
+
+    public boolean isAdministrador(String email) {
+        if (!Validate.isEmail(email) || !usuarioDato.emailExist(email)) {
+            return false;
+        }
+        return usuarioDato.validateIsAdmin(email);
     }
 
     private void validateCreatePersonal(LinkedList<String> params) {

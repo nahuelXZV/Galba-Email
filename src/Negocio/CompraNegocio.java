@@ -18,35 +18,42 @@ public class CompraNegocio {
     }
 
     public String create(String id) {
-        boolean proveedor_exist = proveedorDato.exist(Integer.parseInt(id));
-        if (proveedor_exist) {
-            return "El proveedor no existe.";
+        try {
+            boolean proveedor_exist = proveedorDato.exist(Integer.parseInt(id));
+            if (proveedor_exist) {
+                return "El proveedor no existe.";
+            }
+            compraDato = new CompraDato(0, Integer.parseInt(id));
+            if (compraDato.create()) {
+                return "Creado exitosamente.";
+            }
+            return "No se pudo crear, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        compraDato = new CompraDato(0, Integer.parseInt(id));
-        if (compraDato.create()) {
-            this.respuesta = "Creado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo crear.";
-        }
-        return this.respuesta;
     }
 
     public String delete(String id) {
-        if (!Validate.isNumber(id)) {
-            this.respuesta = "El id debe ser un numero";
-            return this.respuesta;
+        try {
+            if (!Validate.isNumber(id)) {
+                return "El id debe ser un numero";
+            }
+            compraDato = new CompraDato();
+            if (compraDato.delete(Integer.parseInt(id))) {
+                return "Eliminado exitosamente.";
+            }
+            return "No se pudo eliminar, intente nuevamente.";
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
         }
-        compraDato = new CompraDato();
-        if (compraDato.delete(Integer.parseInt(id))) {
-            this.respuesta = "Eliminado exitosamente.";
-        } else {
-            this.respuesta = "No se pudo eliminar.";
-        }
-        return this.respuesta;
     }
 
     public String getAllCom(LinkedList<String> params) {
-        return compraDato.getAllCom(params);
+        try {
+            return compraDato.getAllCom(params);
+        } catch (Exception e) {
+            return "Error del sistema. Intente nuevamente.";
+        }
     }
 
     public String getAll(String id) {

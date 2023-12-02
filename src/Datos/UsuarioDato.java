@@ -233,14 +233,45 @@ public class UsuarioDato {
         }
     }
 
-    public boolean validateRol(String correo, String rol, String atribute) {
-        String sql = "SELECT * FROM usuario WHERE ? = ? AND correo = ?";
+    public boolean validateIsPersonal(String correo) {
+        String sql = "SELECT * FROM usuario WHERE es_personal = true AND correo = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, atribute);
-            ps.setString(2, rol);
-            ps.setString(3, correo);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ps.setString(1, correo);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return true;
+            else
+                return false;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean validateIsCliente(String correo) {
+        String sql = "SELECT * FROM usuario WHERE es_cliente = true AND correo = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, correo);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return true;
+            else
+                return false;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean validateIsAdmin(String correo) {
+        String sql = "SELECT * FROM usuario WHERE es_administrador = true AND correo = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, correo);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next())
+                return true;
+            else
+                return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
