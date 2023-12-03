@@ -51,7 +51,7 @@ public class ProveedorDato {
     }
 
     public boolean updateProveedor() {
-        String sql = "UPDATE proveedor SET nombre = ?, correo = ?, telefono = ?, direccion = ? where id = ?";
+        String sql = "UPDATE proveedor SET nombre = ?, correo = ?, telefono = ?, direccion = ?, nit = ? WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
             ps.setString(2, correo);
@@ -95,8 +95,8 @@ public class ProveedorDato {
         String sql = "SELECT * FROM proveedor WHERE correo = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, correo);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;

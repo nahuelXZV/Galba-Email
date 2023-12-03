@@ -29,10 +29,11 @@ public class CompraDetalleNegocio {
             compraDetalleDato = new CompraDetalleDato(Integer.parseInt(params.get(0)), Float.parseFloat(params.get(1)),
                     Integer.parseInt(params.get(2)), Integer.parseInt(params.get(3)));
             if (compraDetalleDato.create()) {
-                return "Creado exitosamente.";
+                return compraDatos.getAll(Integer.parseInt(params.get(2)));
             }
             return "No se pudo crear, intente nuevamente.";
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "Error del sistema. Intente nuevamente.";
         }
     }
@@ -41,6 +42,9 @@ public class CompraDetalleNegocio {
         try {
             if (!Validate.isNumber(id)) {
                 return "El id debe ser un numero";
+            }
+            if (!compraDetalleDato.exist(Integer.parseInt(id))) {
+                return "El id del detalle de compra no existe.";
             }
             compraDetalleDato = new CompraDetalleDato();
             if (compraDetalleDato.delete(Integer.parseInt(id))) {

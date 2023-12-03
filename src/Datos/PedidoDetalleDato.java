@@ -10,6 +10,7 @@ import Servicios.ConexionDB;
 public class PedidoDetalleDato {
     private final ConexionDB conexion;
     private final CarritoDetalleDato carritoDetalleDato;
+    private ProductoDato productoDato;
 
     private int cantidad;
     private float precio;
@@ -20,6 +21,7 @@ public class PedidoDetalleDato {
     public PedidoDetalleDato() {
         conexion = new ConexionDB();
         carritoDetalleDato = new CarritoDetalleDato();
+        productoDato = new ProductoDato();
     }
 
     public PedidoDetalleDato(int cantidad, float precio, int pedido_id, int producto_id) {
@@ -51,13 +53,14 @@ public class PedidoDetalleDato {
         try {
             this.pedido_id = pedido_id;
             LinkedList<String> carritoDetalle = carritoDetalleDato.getCarritoDetalle(carrito_id);
-            System.out.println(carritoDetalle.size());
             for (int i = 0; i < carritoDetalle.size(); i++) {
                 String[] detalle = carritoDetalle.get(i).split(",");
                 this.cantidad = Integer.parseInt(detalle[0]);
                 this.precio = Float.parseFloat(detalle[1]);
                 this.producto_id = Integer.parseInt(detalle[2]);
-                if (!create()) {
+                boolean isCreated = this.create();
+                boolean isUpdatedProducto = productoDato.updateCantidad(this.producto_id, -this.cantidad);
+                if (!isCreated || !isUpdatedProducto) {
                     return false;
                 }
             }

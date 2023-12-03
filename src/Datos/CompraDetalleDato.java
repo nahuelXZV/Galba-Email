@@ -10,6 +10,7 @@ import Servicios.ConexionDB;
 public class CompraDetalleDato {
     private final ConexionDB conexion;
     private CompraDato compraDato;
+    private ProductoDato productoDato;
 
     private int cantidad;
     private float precio;
@@ -19,6 +20,7 @@ public class CompraDetalleDato {
     public CompraDetalleDato() {
         conexion = new ConexionDB();
         compraDato = new CompraDato();
+        productoDato = new ProductoDato();
     }
 
     public CompraDetalleDato(int cantidad, float precio, int compra_id, int producto_id) {
@@ -40,27 +42,116 @@ public class CompraDetalleDato {
             ps.setInt(4, this.producto_id);
             int rowsAffected = ps.executeUpdate();
             Float monto = this.precio * this.cantidad;
-            if (rowsAffected > 0 && compraDato.update(this.compra_id, monto)) {
-                return true;
-            }
-            return false;
+            boolean idUpdated = rowsAffected > 0;
+            boolean compraUpdated = compraDato.update(this.compra_id, monto);
+            productoDato = new ProductoDato();
+            boolean productoUpdated = productoDato.updateCantidadPrecio(this.producto_id, this.cantidad,
+                    this.precio);
+            return idUpdated && compraUpdated && productoUpdated;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e);
             return false;
         }
     }
 
     public boolean delete(int id) {
         String sql = "DELETE FROM compra_detalle WHERE id = ?";
+        int compra_id = this.getCompraIdByDetalleId(id);
+        int producto_id = this.getProductoIdByDetalleId(id);
+        int cantidad = this.getCantidadByDetalleId(id);
+        float precio = this.getPrecioByDetalleId(id);
+        Float monto = cantidad * precio;
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            boolean idUpdated = rowsAffected > 0;
+            boolean compraUpdated = compraDato.update(compra_id, -monto);
+            productoDato = new ProductoDato();
+            boolean productoUpdated = productoDato.updateCantidadPrecio(producto_id, -cantidad,
+                    precio);
+            return idUpdated && compraUpdated && productoUpdated;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
+
+    private int getProductoIdByDetalleId(int id) {
+        String sql = "SELECT producto_id FROM compra_detalle WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            java.sql.ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("producto_id");
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+
+    private float getPrecioByDetalleId(int id) {
+        String sql = "SELECT precio FROM compra_detalle WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            java.sql.ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getFloat("precio");
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+
+    private int getCantidadByDetalleId(int id) {
+        String sql = "SELECT cantidad FROM compra_detalle WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            java.sql.ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("cantidad");
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+
+    private int getCompraIdByDetalleId(int id) {
+        String sql = "SELECT compra_id FROM compra_detalle WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            java.sql.ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("compra_id");
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+
+    // private Float getMontoTotalDetalle(int id) {
+    // String sql = "SELECT SUM(precio * cantidad) AS monto FROM compra_detalle
+    // WHERE id = ?";
+    // try (Connection con = conexion.connect(); PreparedStatement ps =
+    // con.prepareStatement(sql)) {
+    // ps.setInt(1, id);
+    // java.sql.ResultSet rs = ps.executeQuery();
+    // while (rs.next()) {
+    // return rs.getFloat("monto");
+    // }
+    // return 0f;
+    // } catch (SQLException e) {
+    // System.out.println(e.getMessage());
+    // return 0f;
+    // }
+    // }
 
     public boolean deleteBycompra(int ingreso_id) {
         String sql = "DELETE FROM compra_detalle WHERE compra_id = ?";
@@ -89,5 +180,18 @@ public class CompraDetalleDato {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+
+    public boolean exist(int id) {
+        String sql = "SELECT * FROM compra_detalle WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            java.sql.ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+
     }
 }

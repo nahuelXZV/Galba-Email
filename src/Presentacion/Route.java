@@ -103,11 +103,9 @@ public class Route {
         if (comando.equals("ADDPROD") && isEmpleado) {
             return productoNegocio.createProducto(parametros);
         }
-
         if (comando.equals("EDITPROD") && isEmpleado) {
             return productoNegocio.updateProducto(parametros);
         }
-
         if (comando.equals("DELPROD") && isEmpleado) {
             return productoNegocio.delete(parametros.get(0));
         }
@@ -116,62 +114,56 @@ public class Route {
         if (comando.equals("ADDPROV") && isEmpleado) {
             return proveedorNegocio.createProveedor(parametros);
         }
-
         if (comando.equals("EDITPROV") && isEmpleado) {
             return proveedorNegocio.updateProveedor(parametros);
         }
-
         if (comando.equals("DELPROV") && isEmpleado) {
             return proveedorNegocio.delete(parametros.get(0));
+        }
+        if (comando.equals("LISTPROV") && isEmpleado) {
+            return proveedorNegocio.getAll(parametros);
         }
 
         /* Gestionar Ingreso */
         if (comando.equals("LISTING") && isEmpleado) {
             return ingresoNegocio.getAllIng(parametros);
         }
-
         if (comando.equals("DETING") && isEmpleado) {
             return ingresoNegocio.getAll(parametros.get(0));
         }
-
         if (comando.equals("NEWING") && isEmpleado) {
             return ingresoNegocio.create(parametros.get(0));
         }
-
         if (comando.equals("DELING") && isEmpleado) {
             return ingresoNegocio.delete(parametros.get(0));
         }
 
         /* Gestionar Ingreso Detalle */
-        if (comando.equals("LISTINGPROD") && isEmpleado) {
+        if (comando.equals("ADDINGPROD") && isEmpleado) {
             return ingresoDetalleNegocio.create(parametros);
         }
-
         if (comando.equals("DELINGPROD") && isEmpleado) {
             return ingresoDetalleNegocio.delete(parametros.get(0));
         }
+
         /* Gestionar Salida */
         if (comando.equals("LISTSAL") && isEmpleado) {
             return salidaNegocio.getAllSal(parametros);
         }
-
         if (comando.equals("DETSAL") && isEmpleado) {
             return salidaNegocio.getAll(parametros.get(0));
         }
-
         if (comando.equals("NEWSAL") && isEmpleado) {
             return salidaNegocio.create(parametros.get(0));
         }
-
         if (comando.equals("DELSAL") && isEmpleado) {
             return salidaNegocio.delete(parametros.get(0));
         }
 
         /* Gestionar Ingreso Detalle */
-        if (comando.equals("LISTSALPROD") && isEmpleado) {
+        if (comando.equals("ADDSALPROD") && isEmpleado) {
             return salidaDetalleNegocio.create(parametros);
         }
-
         if (comando.equals("DELSALPROD") && isEmpleado) {
             return salidaDetalleNegocio.delete(parametros.get(0));
         }
@@ -179,25 +171,21 @@ public class Route {
         /* Gestionar Compra */
         if (comando.equals("LISTCOM") && isEmpleado) {
             return compraNegocio.getAllCom(parametros);
-
         }
         if (comando.equals("DETCOM") && isEmpleado) {
             return compraNegocio.getAll(parametros.get(0));
         }
-
         if (comando.equals("NEWCOM") && isEmpleado) {
             return compraNegocio.create(parametros.get(0));
         }
-
         if (comando.equals("DELCOM") && isEmpleado) {
             return compraNegocio.delete(parametros.get(0));
         }
 
-        /* Gestionar Ingreso Detalle */
-        if (comando.equals("LISTCOMPROD") && isEmpleado) {
+        /* Gestionar Compra Detalle */
+        if (comando.equals("ADDCOMPROD") && isEmpleado) {
             return compraDetalleNegocio.create(parametros);
         }
-
         if (comando.equals("DELCOMPROD") && isEmpleado) {
             return compraDetalleNegocio.delete(parametros.get(0));
         }
@@ -213,7 +201,6 @@ public class Route {
         if (comando.equals("LISTUSER") && isAdministrador) {
             return usuarioNegocio.getAll(parametros);
         }
-
         if (comando.equals("ADDUSER") && isAdministrador) {
             return usuarioNegocio.createPersonal(parametros);
         }

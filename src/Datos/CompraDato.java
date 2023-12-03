@@ -34,9 +34,16 @@ public class CompraDato {
         this.monto_total = 0;
     }
 
-    public CompraDato(int id, float monto_total) {
+    public CompraDato(int id, int proveedor_id) {
         conexion = new ConexionDB();
         this.id = id;
+        this.fecha = new java.util.Date().toString().substring(8, 10) + "/"
+                + new java.util.Date().toString().substring(4, 7) + "/"
+                + new java.util.Date().toString().substring(24, 29);
+        this.hora = new java.util.Date().toString().substring(11, 19);
+        this.hora = (Integer.parseInt(this.hora.substring(0, 2)) - 1) + this.hora.substring(2, 8);
+        this.proveedor_id = proveedor_id;
+        this.monto_total = 0;
     }
 
     // Funciones
@@ -90,12 +97,28 @@ public class CompraDato {
         String sql = "SELECT * FROM compra WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    public int getIdLastCompra() {
+        int id = 0;
+        String sql = "SELECT id FROM compra ORDER BY id DESC LIMIT 1";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet resultado = null;
+            resultado = ps.executeQuery();
+            while (resultado.next()) {
+                id = resultado.getInt(1);
+            }
+            return id;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
     }
 
     public float getMontoTotal(int id) {
@@ -131,13 +154,15 @@ public class CompraDato {
                     + "\n"
                     + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">HORA</th>\n"
                     + "\n"
-                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">MOTIVO</th>\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">MONTO TOTAL</th>\n"
+                    + "\n"
+                    + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">PROVEEDOR</th>\n"
                     + "\n";
             String query = "";
             if (params.size() == 0)
-                query = "SELECT id, fecha, hora, monto_total FROM compra";
+                query = "SELECT compra.id, compra.fecha, compra.hora, compra.monto_total, proveedor.nombre FROM compra, proveedor WHERE compra.proveedor_id = proveedor.id";
             else
-                query = "SELECT id, fecha, hora, monto_total FROM compra WHERE "
+                query = "SELECT compra.id, compra.fecha, compra.hora, compra.monto_total, proveedor.nombre FROM compra, proveedor WHERE compra.proveedor_id = proveedor.id AND "
                         + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             Connection con = conexion.connect();
             consulta = con.createStatement();
@@ -205,7 +230,7 @@ public class CompraDato {
                     + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">PRECIO</th>\n"
                     + "\n";
 
-            query = "SELECT compra_detalle.id, producto.imagen, producto.nombre, compra_detalle.cantidad FROM  producto, compra_detalle WHERE compra_detalle.compra_id = "
+            query = "SELECT compra_detalle.id, producto.imagen, producto.nombre, compra_detalle.cantidad, compra_detalle.precio FROM  producto, compra_detalle WHERE compra_detalle.compra_id = "
                     + this.id + " AND compra_detalle.producto_id = producto.id";
             con = conexion.connect();
             consulta = con.createStatement();

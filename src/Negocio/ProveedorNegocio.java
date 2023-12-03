@@ -1,13 +1,16 @@
 package Negocio;
 
 import java.util.LinkedList;
-
 import Datos.ProveedorDato;
 import Utils.Validate;
 
 public class ProveedorNegocio {
     private String respuesta;
     private ProveedorDato proveedorDato;
+
+    public ProveedorNegocio() {
+        proveedorDato = new ProveedorDato();
+    }
 
     public String createProveedor(LinkedList<String> params) {
         try {
@@ -32,8 +35,9 @@ public class ProveedorNegocio {
             if (this.respuesta != null) {
                 return this.respuesta;
             }
-            proveedorDato = new ProveedorDato(0, params.get(0), params.get(1), params.get(2),
-                    params.get(3), params.get(4));
+            proveedorDato = new ProveedorDato(Integer.parseInt(params.get(0)), params.get(1), params.get(2),
+                    params.get(3),
+                    params.get(4), params.get(5));
             if (proveedorDato.updateProveedor()) {
                 return "Actualizado exitosamente.";
             }
@@ -47,6 +51,9 @@ public class ProveedorNegocio {
         try {
             if (!Validate.isNumber(id)) {
                 return "El id debe ser un numero";
+            }
+            if (!proveedorDato.exist(Integer.parseInt(id))) {
+                return "El proveedor no existe";
             }
             proveedorDato = new ProveedorDato();
             if (proveedorDato.delete(Integer.parseInt(id))) {
@@ -62,6 +69,7 @@ public class ProveedorNegocio {
         try {
             return proveedorDato.getAll(params);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "Error al obtener proveedores";
         }
     }
@@ -85,15 +93,15 @@ public class ProveedorNegocio {
             this.respuesta = "El email ya existe";
             return;
         }
-        if (!Validate.isString(params.get(2))) {
-            this.respuesta = "El numero telefono no puede ser vacío";
+        if (!Validate.isNumber(params.get(2))) {
+            this.respuesta = "El numero telefono debe ser un numero y no puede ser vacio";
             return;
         }
         if (!Validate.isString(params.get(3))) {
             this.respuesta = "La direccion debe ser un string y no puede ser vacio";
             return;
         }
-        if (!Validate.isCategoria(params.get(4).toLowerCase())) {
+        if (!Validate.isString(params.get(4))) {
             this.respuesta = "El numero de NIT no puede ser vacio";
             return;
         }
@@ -101,7 +109,7 @@ public class ProveedorNegocio {
 
     private void validateUpdateProveedor(LinkedList<String> params) {
         proveedorDato = new ProveedorDato();
-        if (Validate.hasSize(params, 5)) {
+        if (params.size() != 6) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
@@ -121,8 +129,8 @@ public class ProveedorNegocio {
             this.respuesta = "El email no es valido";
             return;
         }
-        if (!Validate.isString(params.get(3))) {
-            this.respuesta = "El numero de telefono no puede ser vacio";
+        if (!Validate.isNumber(params.get(3))) {
+            this.respuesta = "El numero de telefono debe ser un numero y no puede ser vacio";
             return;
         }
         if (!Validate.isString(params.get(4))) {

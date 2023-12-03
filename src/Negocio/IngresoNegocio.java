@@ -55,6 +55,9 @@ public class IngresoNegocio {
             if (!Validate.isNumber(id)) {
                 return "El id debe ser un numero";
             }
+            if (!ingresoDato.exist(Integer.parseInt(id))) {
+                return "El id del ingreso no existe";
+            }
             return ingresoDato.getAll(Integer.parseInt(id));
         } catch (Exception e) {
             return "Error del sistema. Intente nuevamente.";

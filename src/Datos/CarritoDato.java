@@ -123,6 +123,24 @@ public class CarritoDato {
         }
     }
 
+    public String validateStock(int carrito_id) {
+        String sql = "SELECT carrito_detalle.id, carrito_detalle.cantidad, producto.cantidad, producto.nombre FROM carrito_detalle, producto WHERE carrito_detalle.carrito_id = ? AND carrito_detalle.producto_id = producto.id";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, carrito_id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if (rs.getInt(2) > rs.getInt(3)) {
+                    return "No hay suficiente stock del producto " + rs.getString(4) + ", solo hay " + rs.getInt(3)
+                            + " unidades. Elimine el producto del carrito (ID: " + rs.getInt(1) + ")";
+                }
+            }
+            return "";
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return "Error del sistema. Intente nuevamente.";
+        }
+    }
+
     public float getMontoTotal(int id) {
         float monto_total = 0;
         String sql = "SELECT monto_total FROM carrito WHERE id = ?";

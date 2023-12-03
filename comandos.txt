@@ -38,3 +38,54 @@ LISTPED []
 
 // Crear pedido
 CONFPEDIDO ["123465"]
+
+
+
+
+// Ver proveedores
+LISTPROV []
+
+// Crear proveedor
+ADDPROV ["Lucas Rios", "lucas@live.com", "653526262", "Calle Oruro", "11551511"]
+ADDPROV ["Lucas Rios", "lucas@gmail.com", "sasdasd", "Calle Oruro", "115as51511"]
+ADDPROV ["Lucas Rios", "lucas@.com", "sasdasd", "Calle Oruro"]
+
+
+// Editar proveedor
+EDITPROV ["1","Lucas Del Rios", "lucas@live.com", "653526262", "Calle Oruro", "11551511"]
+
+// Eliminar proveedor
+DELPROV ["1"]
+
+
+// Crear Compra
+NEWCOM ["4"] 
+
+// Agregar al detalle de compra
+ADDCOMPROD ["2", "1650", "1", "1"]
+
+// Eliminar del detalle de compra
+DELCOMPROD ["2"]
+
+// Ver Compra 
+DETCOM ["1"]
+
+
+// Listar Compras
+LISTCOM []
+
+
+// Ver notas de ingreso
+LISTING []
+
+// Crear nota de ingreso
+NEWING ["Devolucion de compra"] 
+
+// Agregar al detalle de nota de ingreso
+ADDINGPROD ["10", "1", "1"]
+
+// Eliminar del detalle de nota de ingreso
+DELINGPROD ["1"]
+
+// Ver nota de ingreso
+DETING ["2"]

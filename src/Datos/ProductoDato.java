@@ -87,6 +87,39 @@ public class ProductoDato {
         }
     }
 
+    public boolean updateCantidadPrecio(int id, int cantidad, Float precio) {
+        int anteriorCantidad = getCantidad(id);
+        float anteriorPrecio = getPrecio(id);
+        int nuevaCantidad = anteriorCantidad + cantidad;
+        float nuevoPrecio = (anteriorPrecio + precio) / 2;
+        String sql = "UPDATE producto SET cantidad = ?, precio = ? WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, nuevaCantidad);
+            ps.setFloat(2, nuevoPrecio);
+            ps.setInt(3, id);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean updateCantidad(int id, int cantidad) {
+        int anteriorCantidad = getCantidad(id);
+        int nuevaCantidad = anteriorCantidad + cantidad;
+        String sql = "UPDATE producto SET cantidad = ? WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, nuevaCantidad);
+            ps.setInt(2, id);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     public boolean delete(int id) {
         String sql = "DELETE FROM producto WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -111,7 +144,7 @@ public class ProductoDato {
         }
     }
 
-    public Float getPrecio(int id) {
+    public float getPrecio(int id) {
         String sql = "SELECT precio FROM producto WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -119,10 +152,26 @@ public class ProductoDato {
             if (rs.next()) {
                 return rs.getFloat(1);
             }
-            return 0f;
+            return 0;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return 0f;
+            return 0;
+        }
+
+    }
+
+    public int getCantidad(int id) {
+        String sql = "SELECT cantidad FROM producto WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return 0;
         }
 
     }

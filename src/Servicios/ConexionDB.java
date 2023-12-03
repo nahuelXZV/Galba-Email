@@ -32,7 +32,7 @@ public class ConexionDB {
 
     public Connection connect() {
         try {
-            System.out.println("conectando a la DB...");
+            // System.out.println("conectando a la DB...");
             Class.forName("org.postgresql.Driver");
             conn = (Connection) DriverManager.getConnection(this.URL, this.USER, this.PASSWORD);
         } catch (SQLException | ClassNotFoundException ex) {

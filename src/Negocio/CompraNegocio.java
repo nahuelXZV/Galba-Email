@@ -19,13 +19,17 @@ public class CompraNegocio {
 
     public String create(String id) {
         try {
+            if (!Validate.isNumber(id)) {
+                return "El id debe ser un numero";
+            }
             boolean proveedor_exist = proveedorDato.exist(Integer.parseInt(id));
-            if (proveedor_exist) {
+            if (!proveedor_exist) {
                 return "El proveedor no existe.";
             }
-            compraDato = new CompraDato(0, Integer.parseInt(id));
+            compraDato = new CompraDato(Integer.parseInt(id));
             if (compraDato.create()) {
-                return "Creado exitosamente.";
+                int id_last = compraDato.getIdLastCompra();
+                return compraDato.getAll(id_last);
             }
             return "No se pudo crear, intente nuevamente.";
         } catch (Exception e) {
