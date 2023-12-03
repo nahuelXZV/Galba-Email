@@ -66,6 +66,8 @@ public class Route {
         }
 
         if (comando.equals("DELCAR")) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return carritoNegocio.delete(parametros.get(0));
         }
 
@@ -75,11 +77,15 @@ public class Route {
         }
 
         if (comando.equals("DELCARPROD")) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return carritoDetalleNegocio.delete(parametros.get(0));
         }
 
         /* Gestionar Pedido */
         if (comando.equals("CONFPEDIDO")) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return pedidoNegocio.create(emailHandler.remitente, parametros.get(0));
         }
 
@@ -88,6 +94,8 @@ public class Route {
         }
 
         if (comando.equals("SHOWPED")) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return pedidoNegocio.getOne(parametros.get(0), emailHandler.remitente);
         }
 
@@ -107,6 +115,8 @@ public class Route {
             return productoNegocio.updateProducto(parametros);
         }
         if (comando.equals("DELPROD") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return productoNegocio.delete(parametros.get(0));
         }
 
@@ -118,6 +128,8 @@ public class Route {
             return proveedorNegocio.updateProveedor(parametros);
         }
         if (comando.equals("DELPROV") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return proveedorNegocio.delete(parametros.get(0));
         }
         if (comando.equals("LISTPROV") && isEmpleado) {
@@ -129,12 +141,18 @@ public class Route {
             return ingresoNegocio.getAllIng(parametros);
         }
         if (comando.equals("DETING") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return ingresoNegocio.getAll(parametros.get(0));
         }
         if (comando.equals("NEWING") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return ingresoNegocio.create(parametros.get(0));
         }
         if (comando.equals("DELING") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return ingresoNegocio.delete(parametros.get(0));
         }
 
@@ -143,6 +161,8 @@ public class Route {
             return ingresoDetalleNegocio.create(parametros);
         }
         if (comando.equals("DELINGPROD") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return ingresoDetalleNegocio.delete(parametros.get(0));
         }
 
@@ -151,12 +171,18 @@ public class Route {
             return salidaNegocio.getAllSal(parametros);
         }
         if (comando.equals("DETSAL") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return salidaNegocio.getAll(parametros.get(0));
         }
         if (comando.equals("NEWSAL") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return salidaNegocio.create(parametros.get(0));
         }
         if (comando.equals("DELSAL") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return salidaNegocio.delete(parametros.get(0));
         }
 
@@ -165,6 +191,8 @@ public class Route {
             return salidaDetalleNegocio.create(parametros);
         }
         if (comando.equals("DELSALPROD") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return salidaDetalleNegocio.delete(parametros.get(0));
         }
 
@@ -173,12 +201,18 @@ public class Route {
             return compraNegocio.getAllCom(parametros);
         }
         if (comando.equals("DETCOM") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return compraNegocio.getAll(parametros.get(0));
         }
         if (comando.equals("NEWCOM") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return compraNegocio.create(parametros.get(0));
         }
         if (comando.equals("DELCOM") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return compraNegocio.delete(parametros.get(0));
         }
 
@@ -187,6 +221,8 @@ public class Route {
             return compraDetalleNegocio.create(parametros);
         }
         if (comando.equals("DELCOMPROD") && isEmpleado) {
+            if (parametros.size() != 1)
+                return "La cantidad de parametros es incorrecta";
             return compraDetalleNegocio.delete(parametros.get(0));
         }
 
