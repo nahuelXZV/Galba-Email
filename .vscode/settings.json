@@ -1,9 +1,16 @@
 {
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "c:\\Users\\Nahuel\\Desktop\\Tecno\\postgresql-42.6.0.jar",
-        "c:\\Users\\Nahuel\\Desktop\\Tecno\\Escuela Ingenieria\\Parcial 1\\javax.mail.jar",
-        "c:\\Proyectos\\postgresql-42.6.0.jar",
-        "c:\\Proyectos\\itext5-itextpdf-5.5.12.jar"
-    ]
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "c:\\Users\\Nahuel\\Desktop\\Tecno\\postgresql-42.6.0.jar",
+            "c:\\Users\\Nahuel\\Desktop\\Tecno\\Escuela Ingenieria\\Parcial 1\\javax.mail.jar",
+            "c:\\Proyectos\\postgresql-42.6.0.jar",
+            "c:\\Proyectos\\itext5-itextpdf-5.5.12.jar"
+        ],
+        "exclude": [
+            "c:\\Users\\Nahuel\\Desktop\\Tecno\\Galba\\lib\\commons-cli-1.5.0.jar",
+            "c:\\Users\\Nahuel\\Desktop\\Tecno\\Galba\\lib\\httpcore5-5.2.4.jar",
+            "c:\\Users\\Nahuel\\Desktop\\Tecno\\Galba\\lib\\httpcore5-h2-5.2.4.jar"
+        ]
+    }
 }

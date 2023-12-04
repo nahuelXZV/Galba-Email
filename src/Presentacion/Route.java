@@ -11,6 +11,7 @@ import Negocio.IngresoNegocio;
 import Negocio.PedidoNegocio;
 import Negocio.ProductoNegocio;
 import Negocio.ProveedorNegocio;
+import Negocio.ReporteNegocio;
 import Negocio.SalidaDetalleNegocio;
 import Negocio.SalidaNegocio;
 import Negocio.UsuarioNegocio;
@@ -31,6 +32,7 @@ public class Route {
         ProductoNegocio productoNegocio = new ProductoNegocio();
         ProveedorNegocio proveedorNegocio = new ProveedorNegocio();
         PedidoNegocio pedidoNegocio = new PedidoNegocio();
+        ReporteNegocio reporteNegocio = new ReporteNegocio();
 
         String comando = emailHandler.getComando();
         LinkedList<String> parametros = emailHandler.getParametros();
@@ -239,6 +241,15 @@ public class Route {
         }
         if (comando.equals("ADDUSER") && isAdministrador) {
             return usuarioNegocio.createPersonal(parametros);
+        }
+        if (comando.equals("REPCOMP") && isAdministrador) {
+            return reporteNegocio.reporteCompras();
+        }
+        if (comando.equals("REPVENT") && isAdministrador) {
+            return reporteNegocio.reporteVentas();
+        }
+        if (comando.equals("REPINV") && isAdministrador) {
+            return reporteNegocio.reporteInventario();
         }
 
         return "Comando no reconocido, consulte el comando HELP para obtener ayuda.";

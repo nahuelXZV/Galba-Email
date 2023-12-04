@@ -29,7 +29,7 @@ public class Help {
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar cliente</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">EDITCLIENT [ID: NUMBER, NOMBRE: STRING, CONTRASEÑA: STRING, DIRECCION: STRING, TELEFONO: STRING]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">EDITCLIENT [NOMBRE: STRING, CONTRASEÑA: STRING, DIRECCION: STRING, TELEFONO: STRING]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar usuario</td> \n \n"
@@ -88,7 +88,7 @@ public class Help {
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar productos</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LISTPROD [] || LISTUSER [KEY: STRING, VALOR: ANY]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LISTPROD [] || LISTPROD [KEY: STRING, VALOR: ANY]</td> \n \n"
                 + "</tr> \n \n"
 
                 + "<tr> \n \n"
@@ -105,7 +105,7 @@ public class Help {
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar proveedores</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LISTPROV [] || LISTUSER [KEY: STRING, VALOR: ANY]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LISTPROV [] || LISTPROV [KEY: STRING, VALOR: ANY]</td> \n \n"
                 + "</tr> \n \n"
 
                 + "<tr> \n \n"
@@ -181,6 +181,19 @@ public class Help {
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar productos de la salida</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELCOMPROD [ID: NUMBER]</td> \n \n"
+                + "</tr> \n \n"
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Reporte de compras</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">REPCOMP []</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Reporte de ventas</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">REPVENT []</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Reporte valor del inventario</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">REPINV []</td> \n \n"
                 + "</tr> \n \n"
 
                 + "</table>";
