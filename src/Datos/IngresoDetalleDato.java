@@ -168,7 +168,6 @@ public class IngresoDetalleDato {
             System.out.println(e.getMessage());
         }
         return id;
-
     }
 
     public boolean exist(int id) {

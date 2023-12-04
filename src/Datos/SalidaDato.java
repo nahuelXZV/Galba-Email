@@ -85,8 +85,8 @@ public class SalidaDato {
         String sql = "SELECT * FROM salida WHERE id = ?";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -124,11 +124,11 @@ public class SalidaDato {
             int cantidadColumnas = rsmd.getColumnCount();
             while (resultado.next()) {
                 tabla = tabla + "  <tr>\n" + "\n";
-                for (int i = 0; i < cantidadColumnas; i++) {                
+                for (int i = 0; i < cantidadColumnas; i++) {
                     tabla = tabla
                             + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
                             + resultado.getString(i + 1) + "</td>\n"
-                            + "\n";                   
+                            + "\n";
                 }
                 tabla = tabla + "  </tr>\n" + "\n";
             }

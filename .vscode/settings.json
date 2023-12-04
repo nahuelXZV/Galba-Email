@@ -3,6 +3,7 @@
         "lib/**/*.jar",
         "c:\\Users\\Nahuel\\Desktop\\Tecno\\postgresql-42.6.0.jar",
         "c:\\Users\\Nahuel\\Desktop\\Tecno\\Escuela Ingenieria\\Parcial 1\\javax.mail.jar",
-        "c:\\Proyectos\\postgresql-42.6.0.jar"
+        "c:\\Proyectos\\postgresql-42.6.0.jar",
+        "c:\\Proyectos\\itext5-itextpdf-5.5.12.jar"
     ]
 }

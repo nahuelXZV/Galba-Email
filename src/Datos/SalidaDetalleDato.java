@@ -9,18 +9,19 @@ import java.util.LinkedList;
 import Servicios.ConexionDB;
 
 public class SalidaDetalleDato {
-    private final ConexionDB conexion;    
+    private final ConexionDB conexion;
+    private ProductoDato productoDato;
 
     private int cantidad;
     private int salida_id;
     private int producto_id;
 
     public SalidaDetalleDato() {
-        conexion = new ConexionDB();        
+        conexion = new ConexionDB();
     }
 
     public SalidaDetalleDato(int cantidad, int salida_id, int producto_id) {
-        conexion = new ConexionDB();        
+        conexion = new ConexionDB();
         this.cantidad = cantidad;
         this.salida_id = salida_id;
         this.producto_id = producto_id;
@@ -28,13 +29,17 @@ public class SalidaDetalleDato {
 
     // Funciones
     public boolean create() {
-        String sql = "INSERT INTO salida_detalle (cantidad, salida_id, producto_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO salida_detalle (cantidad, salida_id, producto_id) VALUES (?, ?, ?)";
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, this.cantidad);
             ps.setInt(2, this.salida_id);
             ps.setInt(3, this.producto_id);
             int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            productoDato = new ProductoDato();
+            if (rowsAffected > 0 && productoDato.updateCantidad(this.producto_id, this.cantidad)) {
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
@@ -57,14 +62,41 @@ public class SalidaDetalleDato {
 
     public boolean delete(int id) {
         String sql = "DELETE FROM salida_detalle WHERE id = ?";
+        int producto_id = getProductoIdByDetalleId(id);
+        int cantidad = getCantidad(id);
         try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            productoDato = new ProductoDato();
+            if (rowsAffected > 0 && productoDato.updateCantidad(producto_id, -cantidad)) {
+                return true;
+            }
+            return false;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    private int getProductoIdByDetalleId(int id) {
+        int producto_id = 0;
+        try {
+            java.sql.Statement consulta;
+            ResultSet resultado = null;
+            String query = "";
+            query = "SELECT producto_id FROM salida_detalle WHERE id = " + id;
+            Connection con = conexion.connect();
+            consulta = con.createStatement();
+            resultado = consulta.executeQuery(query);
+            while (resultado.next()) {
+                producto_id = resultado.getInt(1);
+            }
+            consulta.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return producto_id;
     }
 
     public boolean deleteBysalida(int salida_id) {
@@ -114,6 +146,39 @@ public class SalidaDetalleDato {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    public int getIdLastIngreso() {
+        int id = 0;
+        try {
+            java.sql.Statement consulta;
+            ResultSet resultado = null;
+            String query = "";
+            query = "SELECT MAX(id) FROM salida";
+            Connection con = conexion.connect();
+            consulta = con.createStatement();
+            resultado = consulta.executeQuery(query);
+            while (resultado.next()) {
+                id = resultado.getInt(1);
+            }
+            consulta.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return id;
+
+    }
+
+    public boolean exist(int id) {
+        String sql = "SELECT * FROM salida_detalle WHERE id = ?";
+        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            return false;
         }
     }
 }
