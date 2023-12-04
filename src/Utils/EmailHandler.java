@@ -14,8 +14,8 @@ public class EmailHandler {
     public EmailHandler(String email) {
         this.email = email;
         this.subject = this.getSubject();
-        // this.remitente = this.getRemitente();
-        this.remitente = "daniela.carrasco@nahuelxzv.pro";
+        this.remitente = this.getRemitente();
+        // this.remitente = "daniela.carrasco@nahuelxzv.pro";
     }
 
     private boolean validateSubject() {
