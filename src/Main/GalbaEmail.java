@@ -1,6 +1,7 @@
 package Main;
 
 import Presentacion.Route;
+import Servicios.GmailService;
 import Servicios.PopService;
 import Servicios.SmtpService;
 import Utils.Auth;
@@ -11,7 +12,9 @@ public class GalbaEmail {
 
     public static void main(String[] args) {
         PopService pop = new PopService();
-        SmtpService smtp = new SmtpService();
+        // SmtpService smtp = new SmtpService();
+        GmailService smtp = new GmailService();
+
         Route route = new Route();
         System.out.println("Iniciando servidor...");
 

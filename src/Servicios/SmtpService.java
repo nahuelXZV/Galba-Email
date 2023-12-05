@@ -7,12 +7,11 @@ import java.net.Socket;
 
 public class SmtpService {
 
-    /*
-     * private final String SERVER = "mail.tecnoweb.org.bo";
-     * private final String USER_EMISOR = "grupo06sc@tecnoweb.org.bo";
-     */
-    private final String SERVER = "nahuelxzv.pro";
-    private final String USER_EMISOR = "nahuel.zalazar@nahuelxzv.pro";
+    private final String SERVER = "mail.tecnoweb.org.bo";
+    private final String USER_EMISOR = "grupo06sc@tecnoweb.org.bo";
+
+    // private final String SERVER = "nahuelxzv.pro";
+    // private final String USER_EMISOR = "nahuel.zalazar@nahuelxzv.pro";
     private final int PUERTO = 25;
 
     String line;
