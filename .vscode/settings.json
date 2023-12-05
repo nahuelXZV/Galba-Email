@@ -6,7 +6,8 @@
             "c:\\Users\\Nahuel\\Desktop\\Tecno\\Escuela Ingenieria\\Parcial 1\\javax.mail.jar",
             "c:\\Proyectos\\postgresql-42.6.0.jar",
             "c:\\Proyectos\\itext5-itextpdf-5.5.12.jar",
-            "c:\\Users\\danie\\Downloads\\postgresql-42.6.0.jar"
+            "c:\\Users\\danie\\Downloads\\postgresql-42.6.0.jar",
+            "c:\\Users\\danie\\Downloads\\javax.mail.jar"
         ],
         "exclude": [
             "c:\\Users\\Nahuel\\Desktop\\Tecno\\Galba\\lib\\commons-cli-1.5.0.jar",

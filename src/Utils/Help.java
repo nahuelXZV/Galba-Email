@@ -4,7 +4,7 @@ public class Help {
 
     public static String getHelp() {
         return "<h1>FERRETERIA GALBA - COMANDOS DISPONIBLES</h1>"
-                + "<p>Para poder utilizar los comandos, debe enviar un correo a la direccion: <b> grupo@mail.com </b> con el siguiente formato:</p>"
+                + "<p>Para poder utilizar los comandos, debe enviar un correo a la direccion: <b> grupo06sc@tecnoweb.org.bo </b> con el siguiente formato:</p>"
                 + "<p> <b> Subject: [COMANDO] [PARAMETROS] </b>, los parametros deben ir entre comillas dobles (\"\") y separados por una coma </p>"
                 + "<table style=\" border-collapse: collapse; width: 100%; border: 1px solid black; padding: 8px;\"> \n \n"
                 + "<tr> \n \n"
