@@ -89,3 +89,10 @@ DELINGPROD ["1"]
 
 // Ver nota de ingreso
 DETING ["2"]
+
+
+
+// Agregar personal
+
+ADDUSER ["Daniela Carrasco", "danielaa_carrasco@hotmail.com", "123465798", "Almacenista", "true", "false"]
+

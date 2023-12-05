@@ -54,14 +54,46 @@ public class EmailHandler {
     }
 
     String getSubject() {
-        int startIndex = this.email.indexOf("Subject:") + "Subject:".length();
-        // posicion de In-Reply-To or To
-        int endIndex = this.email.indexOf("To:");
-        if (endIndex == -1 || endIndex < startIndex) {
-            endIndex = this.email.indexOf("In-Reply-To:");
+        int startIndex = 0;
+        int endIndex = 0;
+        String subject = "";
+
+        boolean isHotmail = this.email.indexOf("@hotmail.com") != -1;
+        boolean isYahoo = this.email.indexOf("@yahoo.com") != -1;
+        boolean isFicct = this.email.indexOf("@ficct.uagrm.edu.bo") != -1;
+
+        if (isHotmail) {
+            startIndex = this.email.indexOf("Subject:") + "Subject:".length();
+            String emailRecortado = this.email.substring(startIndex, this.email.length());
+            startIndex = emailRecortado.indexOf("Subject:") + "Subject:".length();
+            emailRecortado = emailRecortado.substring(startIndex, emailRecortado.length());
+            startIndex = emailRecortado.indexOf("Subject:") + "Subject:".length();
+            endIndex = emailRecortado.indexOf("Thread-Topic:");
+            subject = emailRecortado.substring(startIndex, endIndex);
+        } else if (isYahoo) {
+            startIndex = this.email.indexOf("Subject:") + "Subject:".length();
+            String emailRecortado = this.email.substring(startIndex, this.email.length());
+            startIndex = this.email.indexOf("Subject:") + "Subject:".length();
+            emailRecortado = emailRecortado.substring(startIndex, emailRecortado.length());
+            startIndex = emailRecortado.indexOf("Subject:") + "Subject:".length();
+            emailRecortado = emailRecortado.substring(startIndex, emailRecortado.length());
+            startIndex = emailRecortado.indexOf("Subject:") + "Subject:".length();
+            endIndex = emailRecortado.indexOf("MIME-Version:");
+            subject = emailRecortado.substring(startIndex, endIndex);
+        } else if (isFicct) {
+            startIndex = this.email.indexOf("Subject:") + "Subject:".length();
+            String emailRecortado = this.email.substring(startIndex, this.email.length());
+            startIndex = emailRecortado.indexOf("Subject:") + "Subject:".length();
+            endIndex = emailRecortado.indexOf("Content-Type:");
+            subject = emailRecortado.substring(startIndex, endIndex);
+        } else {
+            startIndex = this.email.indexOf("Subject:") + "Subject:".length();
+            endIndex = this.email.indexOf("To:");
+            if (endIndex == -1 || endIndex < startIndex) {
+                endIndex = this.email.indexOf("In-Reply-To:");
+            }
+            subject = this.email.substring(startIndex, endIndex);
         }
-        // obtener el texto entre Subject y In-Reply-To
-        String subject = this.email.substring(startIndex, endIndex);
 
         // eliminar espacios en blanco al inicio y al final
         subject = subject.trim();
@@ -73,8 +105,20 @@ public class EmailHandler {
     }
 
     String getRemitente() {
-        int startIndex = this.email.indexOf("From:") + "From:".length();
-        int endIndex = this.email.indexOf("\n", startIndex);
+        int startIndex = 0;
+        int endIndex = 0;
+        boolean isHotmail = this.email.indexOf("@hotmail.com") != -1;
+        boolean isYahoo = this.email.indexOf("@yahoo.com") != -1;
+        boolean isFicct = this.email.indexOf("@ficct.uagrm.edu.bo") != -1;
+
+        if (isHotmail || isYahoo || isFicct) {
+            startIndex = this.email.indexOf("Return-Path:") + "Return-Path:".length();
+            endIndex = this.email.indexOf("\n", startIndex);
+        } else {
+            startIndex = this.email.indexOf("From:") + "From:".length();
+            endIndex = this.email.indexOf("\n", startIndex);
+        }
+
         String subject = this.email.substring(startIndex, endIndex);
         // Nahuel Zalazar <zalazarnahuel43@gmail.com>
         String[] parts = subject.split("<");

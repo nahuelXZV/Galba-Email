@@ -164,7 +164,7 @@ public class SalidaDato {
                     + "ID: " + this.id + ".<br>"
                     + "Fecha: " + this.fecha + ".<br>"
                     + "Hora: " + this.hora + ".<br>"
-                    + "Motivo: " + this.motivo + "Bs. <br>"
+                    + "Motivo: " + this.motivo + ".<br>"
                     + "<h2>Lista de productos</h2>\n"
                     + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                     + "\n"

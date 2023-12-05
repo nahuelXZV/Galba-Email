@@ -24,7 +24,7 @@ public class GalbaEmail {
             int newCantsMails = pop.getCantidadEmails();
             if (cantMails != newCantsMails) {
                 cantMails = newCantsMails;
-                System.out.println("*************NEW EMAIL**********************");
+                System.out.println("***********************NEW EMAIL********************************");
                 try {
                     String email = pop.getMail();
                     EmailHandler emailHandler = new EmailHandler(email);
@@ -32,21 +32,21 @@ public class GalbaEmail {
                     System.out.println("Subject: " + emailHandler.subject);
                     if (emailHandler.subject.equals("HELP") || emailHandler.subject.equals("help")) {
                         smtp.sendEmail(Help.getHelp(), emailHandler.remitente);
-                        System.out.println("**********************************************");
+                        System.out.println("******************************************************************");
                         continue;
                         // return;
                     }
                     if (!emailHandler.isValidate()) {
                         System.out.println("Error: " + emailHandler.messageError);
                         smtp.sendEmailError("Error", emailHandler.messageError, emailHandler.remitente);
-                        System.out.println("**********************************************");
+                        System.out.println("******************************************************************");
                         continue;
                         // return;
                     }
                     String comando = emailHandler.getComando();
                     if (!Auth.auth(emailHandler.remitente) && !comando.equals("ADDCLIENT")) {
                         smtp.sendEmailError("Error", "Usuario no autorizado", emailHandler.remitente);
-                        System.out.println("**********************************************");
+                        System.out.println("******************************************************************");
                         continue;
                         // return;
                     }
@@ -55,10 +55,10 @@ public class GalbaEmail {
                 } catch (Exception e) {
                     System.out.println("Error al obtener emails");
                 }
-                System.out.println("**********************************************");
+                System.out.println("******************************************************************");
             }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 System.out.println("Error en el servidor.");
             }

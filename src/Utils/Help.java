@@ -151,7 +151,7 @@ public class Help {
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Agregar productos a la salida</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">ADDSALPROD [CANTIDAD: NUMBER, INGRESO_ID: NUMBER, PRODUCTO_ID: NUMBER]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">ADDSALPROD [CANTIDAD: NUMBER, SALIDA_ID: NUMBER, PRODUCTO_ID: NUMBER]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar productos de la salida</td> \n \n"

@@ -36,7 +36,7 @@ public class SalidaDetalleDato {
             ps.setInt(3, this.producto_id);
             int rowsAffected = ps.executeUpdate();
             productoDato = new ProductoDato();
-            if (rowsAffected > 0 && productoDato.updateCantidad(this.producto_id, this.cantidad)) {
+            if (rowsAffected > 0 && productoDato.updateCantidad(this.producto_id, -this.cantidad)) {
                 return true;
             }
             return false;
@@ -68,7 +68,7 @@ public class SalidaDetalleDato {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
             productoDato = new ProductoDato();
-            if (rowsAffected > 0 && productoDato.updateCantidad(producto_id, -cantidad)) {
+            if (rowsAffected > 0 && productoDato.updateCantidad(producto_id, cantidad)) {
                 return true;
             }
             return false;
