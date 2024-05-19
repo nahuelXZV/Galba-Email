@@ -17,9 +17,9 @@ public class GmailService {
     private final static String PORT_SMTP = "465";
     private final static String PROTOCOL = "smtp";
     private final static String HOST = "smtp.googlemail.com";
-    private final static String USER = "zalazarnahuel43@gmail.com";
-    private final static String MAIL = "zalazarnahuel43@gmail.com";
-    private final static String MAIL_PASSWORD = "bzljqgesalffzmsx";
+    private final static String USER = "";
+    private final static String MAIL = "";
+    private final static String MAIL_PASSWORD = "";
 
     public boolean sendEmail(String mensaje, String receptor) {
         Properties properties = new Properties();
